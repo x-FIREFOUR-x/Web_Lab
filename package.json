@@ -27,12 +27,12 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/x-FIREFOUR-x/WebLab1.git"
+        "url": "git+https://github.com/x-FIREFOUR-x/Web_Lab1.git"
     },
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/x-FIREFOUR-x/WebLab1/issues"
+        "url": "https://github.com/x-FIREFOUR-x/Web_Lab1/issues"
     },
-    "homepage": "https://github.com/x-FIREFOUR-x/WebLab1#readme"
+    "homepage": "https://github.com/x-FIREFOUR-x/Web_Lab1#readme"
 }
