@@ -16,14 +16,13 @@
         "stylelint-declaration-use-variable": "^1.7.3"
     },
     "scripts": {
-        "lint": "eslint . --no-error-on-unmatched-pattern",
-        "lint:fix": "eslint . --fix",
+        "lint": "eslint . --no-error-on-unmatched-pattern --ignore-path .gitignore",
+        "lint:fix": "eslint . --fix --ignore-path .gitignore",
         "format": "prettier --check .",
         "format:fix": "prettier . --write",
-        "lint:style": "stylelint \"./**/*.css\"",
-        "lint:style:fix": "stylelint \"./**/*.css\" --fix",
-        "prepare": "husky install",
-        "sass": "sass ."
+        "lint:style": "stylelint \"./**/*.css\" --ignore-path .gitignore ",
+        "lint:style:fix": "stylelint \"./**/*.css\" --fix --ignore-path .gitignore",
+        "prepare": "husky install"
     },
     "repository": {
         "type": "git",

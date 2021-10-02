@@ -19,7 +19,7 @@
     top: 0;
 }
 
-.title {
+header {
     align-items: center;
     background-color: var(--title-bg-color);
     border: 1px solid;
@@ -35,7 +35,7 @@
     flex-direction: row;
 }
 
-.menu {
+nav {
     align-items: center;
     background-color: var(--menu-bg-color);
     border: 1px solid;
@@ -69,7 +69,7 @@
     flex-direction: row;
 }
 
-.main {
+main {
     background-color: var(--main-bg-color);
     border: 1px solid ;
 
@@ -101,8 +101,7 @@
     display: flex;
     flex: 1;
 }
-
-.line1 {
+h1 {
     align-items: center;
     background-color: var(--lines-bg-color);
     border: 1px solid;
@@ -115,7 +114,7 @@
     padding: 3px;
 }
 
-.line2 {
+h2 {
     align-items: center;
     background-color: var(--lines-bg-color);
     border: 1px solid;
@@ -126,13 +125,13 @@
     min-height: 50%;
     padding: 3px;
 }
-.menu > ul {
+nav > ul {
 
     padding: 2px;
     width: 100%;
 
 }
-.menu > ul > li {
+nav > ul > li {
 
     height: 50px;
     list-style: none;
@@ -141,7 +140,7 @@
     width: 100%;
 
 }
-.menu a {
+nav a {
     color: var(--menu-li-text-color);
     display: block;
     font-size: 35px;
@@ -150,29 +149,29 @@
     text-decoration: none;
     transition: 150ms all;
 }
-.menu a:hover {
+nav a:hover {
     background: var(--menu-li-bg-hover-color);
 }
-.main > ol {
+main > ol {
     align-items: center;
     display: flex;
     flex-direction: column;
 }
-.main > ol > li {
+main > ol > li {
 
     padding: 3px;
     width: fit-content;
 }
-.main > p {
+main > p {
     margin-top: 1em;
 }
 
-.main > ul {
+main > ul {
     align-items: center;
     display: flex;
     flex-direction: column;
 }
-.main > ul > li {
+main > ul > li {
 
     padding: 3px;
     width: fit-content;
