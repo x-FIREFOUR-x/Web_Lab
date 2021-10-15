@@ -1,4 +1,5 @@
 import adapter from '@sveltejs/adapter-static';
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	kit: {
@@ -19,7 +20,8 @@ const config = {
 						target: 'http://localhost:5001/lab2-o-p/us-central1/sendmail',
 						changeOrigin: true,
 						secure: false,
-						rewrite:(path ) => path.replace(/ *\/api/, '')
+						rewrite:(path) => path.replace(/^\/api/, '')
+						//rewrite:(path => path.replace(/^\/api/, ''))
 					}
 				}
 			}
