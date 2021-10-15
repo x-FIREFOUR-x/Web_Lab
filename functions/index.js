@@ -23,7 +23,7 @@ exports.sendmail = functions.https.onRequest((req, res) => {
     if (!Object.keys(req.body ?? {}).length) {   // if(Object.keys(req.body?.data ?? {}).length)
         return res.status(400).json({code: "400", error: "no data passed to api"});
     }
-    console.log(req.body);
+
     const lines = Object.entries(req.body)
         .map(([key, val]) => `<p><b>${key}: </b>${val}</p>`)
         .join("\n");
