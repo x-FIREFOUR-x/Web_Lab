@@ -3,9 +3,7 @@ const nodemailer = require("nodemailer");
 const sanitizeHtml = require("sanitize-html");
 const mail = "";
 const password = "";
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
+
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
