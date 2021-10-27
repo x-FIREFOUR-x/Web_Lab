@@ -1,21 +1,27 @@
 const functions = require("firebase-functions");
 const nodemailer = require("nodemailer");
 const sanitizeHtml = require("sanitize-html");
-const mail = functions.config().secretemail.mail;
-const password = functions.config().secretemail.password;
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // true for 465, false for other ports
-  auth: {
-    user: mail, // generated ethereal user
-    pass: password, // generated ethereal password
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
-});
+
+const secretMailData = functions.config().secretemail;
+let transporter = null;
+
+if (secretMailData !== undefined) {
+  transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: secretMailData.mail, // generated ethereal user
+      pass: secretMailData.password, // generated ethereal password
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+} else {
+  console.log("Secretemail is undefined");
+}
 
 const rateLimit = {
   ipNumberCalls: 3,
@@ -57,19 +63,24 @@ exports.sendmail = functions.https.onRequest((req, res) => {
 
   const html = sanitizeHtml(`<h2> Message from  form: </h2>${lines}`);
 
-  const mailOptions = {
+  if (transporter != null) {
+    const mailOptions = {
 
-    from: `Contact form <${mail}>`,
-    to: "olexandrpasalsky@gmail.com",
-    subject: "Hi, nice form!!!",
-    html: html,
-  };
+      from: `Contact form <${secretMailData.mail}>`,
+      to: "olexandrpasalsky@gmail.com",
+      subject: "Hi, nice form!!!",
+      html: html,
+    };
 
-  transporter.sendMail(mailOptions, (error) => {
-    if (error) {
-      console.error("Error sending mail", error.message);
-      return res.status(500).json({code: "500", error: error.message});
-    }
-    return res.status(200).json({data: "ok"});
-  });
+    transporter.sendMail(mailOptions, (error) => {
+      if (error) {
+        console.error("Error sending mail", error.message);
+        return res.status(500).json({code: "500", error: error.message});
+      }
+      return res.status(200).json({data: "ok"});
+    });
+  } else {
+    return res.status(500).json({code: "500",
+      error: "Mail name and pass are undefined"});
+  }
 });

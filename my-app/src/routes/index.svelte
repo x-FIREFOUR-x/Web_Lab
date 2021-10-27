@@ -7,7 +7,7 @@
 			reset: () => {}
 		}
 
-
+	let textError = "";
 	let showSpinner = false;
 	let statusMessage = false;
 	let errorMessage = false;
@@ -42,6 +42,9 @@
 				if(res.status >= 200 && res.status < 300){
 					return res;
 				}
+				else{
+					throw res;
+				}
 			})
 			statusMessage = true;
 			//form.reset();
@@ -49,6 +52,18 @@
 			formBtnDisable = false;
 			e.target.reset();
 		}catch(e){
+			if (e.status >= 500){
+				textError = "Error Server";
+			}
+			else if(e.status === 400)
+			{
+				textError = "Empty email message!";
+			}
+			else if(e.status === 429)
+			{
+				textError = "Send too many mail";
+			}
+			statusMessage = false;
 			errorMessage = true;
 			showSpinner = false;
 			formBtnDisable = false;
@@ -86,7 +101,7 @@
 			</p>
 		{:else if errorMessage}
 			<p class="status-text error">
-				Email doesn't exist
+				{textError}
 				<button class="button class-btn" on:click={resetFormStatus}> &times; </button>
 			</p>
 		{/if}
