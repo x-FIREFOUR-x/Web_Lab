@@ -1,13 +1,13 @@
 * {
-    --title-bg-color: #467AD7FF;
-    --menu-bg-color: #8FBC8FFF;
-    --footer-bg-color: #467AD7FF;
-    --main-bg-color: #FFFF;
-    --picturemap-bg-color: #8FBC8FFF;
-    --picture-bg-color: #FAEBD7FF;
-    --lines-bg-color: #FFFF;
-    --menu-li-text-color: #FF0F;
-    --menu-li-bg-hover-color: #2BDD3EFF;
+    --title-bg-color: #467ad7ff;
+    --menu-bg-color: #8fbc8fff;
+    --footer-bg-color: #467ad7ff;
+    --main-bg-color: #ffff;
+    --picturemap-bg-color: #8fbc8fff;
+    --picture-bg-color: #faebd7ff;
+    --lines-bg-color: #ffff;
+    --menu-li-text-color: #ff0f;
+    --menu-li-bg-hover-color: #2bdd3eff;
     box-sizing: border-box;
     margin: 0;
 }
@@ -71,7 +71,7 @@ nav {
 
 main {
     background-color: var(--main-bg-color);
-    border: 1px solid ;
+    border: 1px solid;
 
     display: flex;
     flex: 2;
@@ -89,7 +89,7 @@ main {
 .picturemap {
     align-items: center;
     background-color: var(--picturemap-bg-color);
-    border: 1px solid ;
+    border: 1px solid;
     display: flex;
     flex: 1;
 }
@@ -126,26 +126,22 @@ h2 {
     padding: 3px;
 }
 nav > ul {
-
     padding: 2px;
     width: 100%;
-
 }
 nav > ul > li {
-
     height: 50px;
     list-style: none;
     outline: 1px solid;
     padding: 0;
     width: 100%;
-
 }
 nav a {
     color: var(--menu-li-text-color);
     display: block;
     font-size: 35px;
     height: 50px;
-    outline: 1px solid ;
+    outline: 1px solid;
     text-decoration: none;
     transition: 150ms all;
 }
@@ -158,7 +154,6 @@ main > ol {
     flex-direction: column;
 }
 main > ol > li {
-
     padding: 3px;
     width: fit-content;
 }
@@ -172,7 +167,6 @@ main > ul {
     flex-direction: column;
 }
 main > ul > li {
-
     padding: 3px;
     width: fit-content;
 }
