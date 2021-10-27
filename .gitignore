@@ -117,3 +117,10 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+.DS_Store
+node_modules
+/build
+/.svelte-kit
+/package
+/.idea
