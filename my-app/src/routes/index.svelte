@@ -71,6 +71,14 @@
 				  required
 		/>
 
+		<button class="button contact-form-button" type="submit" disabled={formBtnDisable}>
+			{#if showSpinner}
+				<img src={formSpinner} alt="spinner" />
+			{:else if true}
+				Send
+			{/if}
+		</button>
+
 		{#if statusMessage}
 			<p class="status-text success">
 				Message sent!
@@ -83,28 +91,56 @@
 			</p>
 		{/if}
 
-		<button class="button contact-form-button" type="submit" disabled={formBtnDisable}>
-			{#if showSpinner}
-				<img src={formSpinner} alt="spinner" />
-			{/if}
-			Submit
-		</button>
+
+
+
 	</form>
 
 
 
 <style>
+	 *{
+
+		 margin: 0;
+		 --bg-color: white;
+		 --border-color: black;
+
+	}
 	form {
+		height: 50%;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		flex: 1;
 	}
-
 	h1 {
 		width: 100%;
 	}
+	.contact-form-input{
+		height: 5%;
+		width: 25%;
+	}
+	button{
 
 
+		padding: 0;
+
+	}
+	textarea{
+
+		width: 25%;
+		height: 40%;
+	}
+	p{
+		background: var(--bg-color);
+		border: 1px solid;
+
+
+		border-color: var(--border-color);
+	}
+	img{
+		width: 100%;
+		height: 100%;
+	}
 </style>
