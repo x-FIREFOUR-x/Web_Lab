@@ -2,7 +2,8 @@
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . --no-error-on-unmatched-pattern --ignore-path .gitignore",
+    "lint:fix": "eslint . --no-error-on-unmatched-pattern --fix --ignore-path .gitignore",
     "serve": "firebase emulators:start --only functions",
     "shell": "firebase functions:shell",
     "start": "npm run shell",

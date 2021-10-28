@@ -2,27 +2,6 @@ const functions = require("firebase-functions");
 const nodemailer = require("nodemailer");
 const sanitizeHtml = require("sanitize-html");
 
-
-const secretMailData = functions.config().secretemail;
-let transporter = null;
-
-if (secretMailData !== undefined) {
-  transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: secretMailData.mail, // generated ethereal user
-      pass: secretMailData.password, // generated ethereal password
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-  });
-} else {
-  console.log("Secretemail is undefined");
-}
-
 const rateLimit = {
   ipNumberCalls: 3,
   timeSeconds: 30,
@@ -30,30 +9,48 @@ const rateLimit = {
 };
 
 exports.sendmail = functions.https.onRequest((req, res) => {
+  const secretMailData = functions.config().secretemail;
+  let transporter = null;
+
+  if (secretMailData) {
+    transporter = nodemailer.createTransport({
+      host: secretMailData.host,
+      port: secretMailData.port,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: secretMailData.mail, // generated ethereal user
+        pass: secretMailData.password, // generated ethereal password
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+  } else {
+    functions.logger.log("Secretemail is undefined");
+    return res.status(500).json({code: "500",
+      error: "Mail name and pass are undefined"});
+  }
+
   const currentIp = req.headers["fastly-client-ip"];
   let currentIpUser = {};
   const currentTime = new Date();
 
-  if (rateLimit.ipData.get(currentIp) == undefined) {
+  if (!rateLimit.ipData.get(currentIp)) {
     rateLimit.ipData.set(currentIp, {count: 1, time: currentTime});
   } else {
     currentIpUser = rateLimit.ipData.get(currentIp);
-    currentIpUser.count+=1;
-    rateLimit.ipData.set(currentIp, currentIpUser);
-    if ((currentIpUser.count > rateLimit.ipNumberCalls) ||
+    if ((currentIpUser.count + 1 > rateLimit.ipNumberCalls) ||
             (currentTime - currentIpUser.time <= rateLimit.timeSeconds*1000)) {
       return res.status(429)
           .json({code: "429", error: "Too many sends!"});
     }
+    currentIpUser = rateLimit.ipData.get(currentIp);
+    currentIpUser.count+=1;
+    currentIpUser.time = new Date();
   }
-  currentIpUser = rateLimit.ipData.get(currentIp);
-  currentIpUser.time = new Date();
-  rateLimit.ipData.set(currentIp, currentIpUser);
-
 
   functions.logger.info("Hello logs!", {structuredData: true});
-  res.send("Hello from Firebase!");
-  if (!Object.keys(req.body ? req.body : {} === req.body ?? {})) {
+  if (!Object.keys(req.body ?? {}).length) {
     return res.status(400).json({code: "400", error: "no data passed to api"});
   }
 
@@ -63,24 +60,19 @@ exports.sendmail = functions.https.onRequest((req, res) => {
 
   const html = sanitizeHtml(`<h2> Message from  form: </h2>${lines}`);
 
-  if (transporter != null) {
-    const mailOptions = {
+  const mailOptions = {
 
-      from: `Contact form <${secretMailData.mail}>`,
-      to: "olexandrpasalsky@gmail.com",
-      subject: "Hi, nice form!!!",
-      html: html,
-    };
+    from: `Contact form <${secretMailData.mail}>`,
+    to: secretMailData.to,
+    subject: "Hi, nice form!!!",
+    html: html,
+  };
 
-    transporter.sendMail(mailOptions, (error) => {
-      if (error) {
-        console.error("Error sending mail", error.message);
-        return res.status(500).json({code: "500", error: error.message});
-      }
-      return res.status(200).json({data: "ok"});
-    });
-  } else {
-    return res.status(500).json({code: "500",
-      error: "Mail name and pass are undefined"});
-  }
+  transporter.sendMail(mailOptions, (error) => {
+    if (error) {
+      console.error("Error sending mail", error.message);
+      return res.status(500).json({code: "500", error: error.message});
+    }
+    return res.status(200).json({data: "ok"});
+  });
 });
