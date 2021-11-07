@@ -15,7 +15,6 @@ body {
     bottom: 0;
     display: flex;
     flex-direction: column;
-    position: absolute;
     top: 0;
 }
 
@@ -52,7 +51,7 @@ nav {
     flex-direction: column;
 }
 
-.footer {
+footer {
     align-items: center;
     background-color: var(--footer-bg-color);
     border: 1px solid;
