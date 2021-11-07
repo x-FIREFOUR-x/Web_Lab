@@ -23,13 +23,11 @@
 		statusMessage = false;
 		const referrerVal = document.referrer;
 
-		let formData = {
-
-				Mame: form.elements.userName.value,
-				Email: form.elements.userEmail.value,
-				Message: form.elements.userMessage.value,
-				referrer : referrerVal
-		}
+		let formData = {referrer : referrerVal};
+		Array.from(form.elements).forEach(e=>{
+			formData[e.name] = e.value;
+		} )
+		
 
 		try{
 			await fetch('/api/sendmail',{
