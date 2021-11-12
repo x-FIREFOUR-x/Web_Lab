@@ -37,17 +37,12 @@
 				body: JSON.stringify(formData),
 				method: 'POST'
 			}).then((res) => {
-				if(res.status >= 200 && res.status < 300){
+				if(res.ok){
 					return res;
 				}
-				else{
-					throw res;
-				}
+				throw res;
 			})
 			statusMessage = true;
-			//form.reset();
-			showSpinner = false;
-			formBtnDisable = false;
 			e.target.reset();
 		}catch(e){
 			if (e.status >= 500){
@@ -63,9 +58,11 @@
 			}
 			statusMessage = false;
 			errorMessage = true;
+			console.log(e);
+		}
+		finally{
 			showSpinner = false;
 			formBtnDisable = false;
-			console.log(e);
 		}
 	}
 </script>
