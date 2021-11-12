@@ -27,21 +27,15 @@ body {
 		var(--tertiary-color) 41.35%
 	);
 }
-#svelte{
+#svelte {
 	min-height: 100vh;
 	min-width: 100vh;
 	display: flex;
-	flex:1;
+	flex: 1;
 	justify-content: center;
 	align-items: center;
 }
-section{
-
+section {
 	display: flex;
-	flex:1;
+	flex: 1;
 }
-
-
-
-
-

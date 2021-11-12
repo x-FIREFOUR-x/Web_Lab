@@ -13,19 +13,18 @@ const config = {
 			fallback: null
 		}),
 
-		vite:{
-			server:{
-				proxy:{
-					'/api/sendmail':{
+		vite: {
+			server: {
+				proxy: {
+					'/api/sendmail': {
 						target: 'http://localhost:5001/lab2-o-p/us-central1/sendmail',
 						changeOrigin: true,
 						secure: false,
-						rewrite:(path) => path.replace(/^\/api/, '')
+						rewrite: (path) => path.replace(/^\/api/, '')
 						//rewrite:(path => path.replace(/^\/api/, ''))
 					}
 				}
 			}
-
 		}
 	}
 };

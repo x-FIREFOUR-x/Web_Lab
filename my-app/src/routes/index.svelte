@@ -1,120 +1,101 @@
-
-
 <script>
-
 	import formSpinner from '$lib/formSpinner.png';
-		let form = {
-			reset: () => {}
-		}
+	let form = {
+		reset: () => {}
+	};
 
-	let textError = "";
+	let textError = '';
 	let showSpinner = false;
 	let statusMessage = false;
 	let errorMessage = false;
 	let formBtnDisable = false;
-	function resetFormStatus(){
+	function resetFormStatus() {
 		statusMessage = false;
 		errorMessage = false;
 		formBtnDisable = false;
 	}
-	let contactFormHandler = async (e) =>{
+	let contactFormHandler = async (e) => {
 		formBtnDisable = true;
 		showSpinner = true;
 		statusMessage = false;
 		const referrerVal = document.referrer;
 
-		let formData = {referrer : referrerVal};
-		Array.from(form.elements).forEach(e=>{
+		let formData = { referrer: referrerVal };
+		Array.from(form.elements).forEach((e) => {
 			formData[e.name] = e.value;
-		} )
-		
+		});
 
-		try{
-			await fetch('/api/sendmail',{
+		try {
+			await fetch('/api/sendmail', {
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(formData),
 				method: 'POST'
 			}).then((res) => {
-				if(res.ok){
+				if (res.ok) {
 					return res;
 				}
 				throw res;
-			})
+			});
 			statusMessage = true;
 			e.target.reset();
-		}catch(e){
-			if (e.status >= 500){
-				textError = "Error Server";
-			}
-			else if(e.status === 400)
-			{
-				textError = "Empty email message!";
-			}
-			else if(e.status === 429)
-			{
-				textError = "Send too many mail";
+		} catch (e) {
+			if (e.status >= 500) {
+				textError = 'Error Server';
+			} else if (e.status === 400) {
+				textError = 'Empty email message!';
+			} else if (e.status === 429) {
+				textError = 'Send too many mail';
 			}
 			statusMessage = false;
 			errorMessage = true;
 			console.log(e);
-		}
-		finally{
+		} finally {
 			showSpinner = false;
 			formBtnDisable = false;
 		}
-	}
+	};
 </script>
 
+<form class="contact-form" bind:this={form} on:submit|preventDefault={contactFormHandler}>
+	<input class="contact-form-input" type="text" name="userName" placeholder="Name" required />
+	<input class="contact-form-input" type="email" name="userEmail" placeholder="Email" required />
+	<textarea
+		class="contact-form-message"
+		name="userMessage"
+		cols="30"
+		rows="10"
+		placeholder="Message text"
+		required
+	/>
 
-
-
-	<form class="contact-form" bind:this={form} on:submit|preventDefault = {contactFormHandler} >
-		<input class = "contact-form-input" type="text" name="userName" placeholder="Name" required />
-		<input class = "contact-form-input" type="email" name="userEmail" placeholder="Email" required />
-		<textarea class="contact-form-message"
-				  name="userMessage"
-				  cols="30"
-				  rows="10"
-				  placeholder="Message text"
-				  required
-		/>
-
-		<button class="button contact-form-button" type="submit" disabled={formBtnDisable}>
-			{#if showSpinner}
-				<img src={formSpinner} alt="spinner" />
-			{:else if true}
-				Send
-			{/if}
-		</button>
-
-		{#if statusMessage}
-			<p class="status-text success">
-				Message sent!
-				<button class="button class-btn" on:click={resetFormStatus}> &times; </button>
-			</p>
-		{:else if errorMessage}
-			<p class="status-text error">
-				{textError}
-				<button class="button class-btn" on:click={resetFormStatus}> &times; </button>
-			</p>
+	<button class="button contact-form-button" type="submit" disabled={formBtnDisable}>
+		{#if showSpinner}
+			<img src={formSpinner} alt="spinner" />
+		{:else if true}
+			Send
 		{/if}
+	</button>
 
-
-
-
-	</form>
-
-
+	{#if statusMessage}
+		<p class="status-text success">
+			Message sent!
+			<button class="button class-btn" on:click={resetFormStatus}> &times; </button>
+		</p>
+	{:else if errorMessage}
+		<p class="status-text error">
+			{textError}
+			<button class="button class-btn" on:click={resetFormStatus}> &times; </button>
+		</p>
+	{/if}
+</form>
 
 <style>
-	 *{
-
-		 margin: 0;
-		 --bg-color: white;
-		 --border-color: black;
-
+	* {
+		margin: 0;
+		--bg-color: white;
+		--border-color: black;
 	}
 	form {
 		height: 50%;
@@ -124,32 +105,23 @@
 		align-items: center;
 		flex: 1;
 	}
-	h1 {
-		width: 100%;
-	}
-	.contact-form-input{
+	.contact-form-input {
 		height: 5%;
 		width: 25%;
 	}
-	button{
-
-
+	button {
 		padding: 0;
-
 	}
-	textarea{
-
+	textarea {
 		width: 25%;
 		height: 40%;
 	}
-	p{
+	p {
 		background: var(--bg-color);
 		border: 1px solid;
-
-
 		border-color: var(--border-color);
 	}
-	img{
+	img {
 		width: 100%;
 		height: 100%;
 	}

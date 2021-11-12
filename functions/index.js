@@ -33,13 +33,9 @@ exports.sendmail = functions.https.onRequest((req, res) => {
       error: "Mail name and pass are undefined"});
   }
 
-  functions.logger.log("eror1");
-
   const currentIp = req.headers["fastly-client-ip"];
   let currentIpUser = rateLimit.ipData.get(currentIp);
   const currentTime = new Date();
-
-  functions.logger.log("eror2");
 
   if (!currentIpUser) {
     currentIpUser =
@@ -58,13 +54,9 @@ exports.sendmail = functions.https.onRequest((req, res) => {
   currentIpUser.count+=1;
   currentIpUser.time = new Date();
 
-  functions.logger.log("eror4");
-
   if (!Object.keys(req.body ?? {}).length) {
     return res.status(400).json({code: "400", error: "no data passed to api"});
   }
-
-  functions.logger.log("eror5");
 
   const lines = Object.entries(req.body)
       .map(([key, val]) => `<p><b>${key}: </b>${val}</p>`)
@@ -72,16 +64,12 @@ exports.sendmail = functions.https.onRequest((req, res) => {
 
   const html = sanitizeHtml(`<h2> Message from  form: </h2>${lines}`);
 
-  functions.logger.log("eror6");
-
   const mailOptions = {
     from: `Contact form <${secretMailData.mail}>`,
     to: secretMailData.to,
     subject: "Hi, nice form!!!",
     html: html,
   };
-
-  functions.logger.log("eror7");
 
   transporter.sendMail(mailOptions, (error) => {
     if (error) {
