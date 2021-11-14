@@ -74,85 +74,38 @@
 
 
 
+<div class = "list">
+	<div class ="name-list">
+		<i><u>Завдання</u></i>
+	</div>
+	<div class = "writes-list">
 
-	<form class="contact-form" bind:this={form} on:submit|preventDefault = {contactFormHandler} >
-		<input class = "contact-form-input" type="text" name="userName" placeholder="Name" required />
-		<input class = "contact-form-input" type="email" name="userEmail" placeholder="Email" required />
-		<textarea class="contact-form-message"
-				  name="userMessage"
-				  cols="30"
-				  rows="10"
-				  placeholder="Message text"
-				  required
-		/>
+	</div>
+</div>	
 
-		<button class="button contact-form-button" type="submit" disabled={formBtnDisable}>
-			{#if showSpinner}
-				<img src={formSpinner} alt="spinner" />
-			{:else if true}
-				Send
-			{/if}
-		</button>
-
-		{#if statusMessage}
-			<p class="status-text success">
-				Message sent!
-				<button class="button class-btn" on:click={resetFormStatus}> &times; </button>
-			</p>
-		{:else if errorMessage}
-			<p class="status-text error">
-				{textError}
-				<button class="button class-btn" on:click={resetFormStatus}> &times; </button>
-			</p>
-		{/if}
-
-
-
-
-	</form>
 
 
 
 <style>
 	 *{
 
-		 margin: 0;
+		 margin: 2px;
 		 --bg-color: white;
 		 --border-color: black;
+		 --border-list: #f3f326;
 
 	}
-	form {
-		height: 50%;
+
+	.list{
+		background-color: var(--border-list);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		flex: 1;
+		
 	}
-	.contact-form-input{
-		height: 5%;
-		width: 25%;
+	.name-list{
+		text-align: center;
 	}
-	button{
-
-
-		padding: 0;
-
-	}
-	textarea{
-
-		width: 25%;
-		height: 40%;
-	}
-	p{
-		background: var(--bg-color);
-		border: 1px solid;
-
-
-		border-color: var(--border-color);
-	}
-	img{
-		width: 100%;
-		height: 100%;
-	}
+	
 </style>

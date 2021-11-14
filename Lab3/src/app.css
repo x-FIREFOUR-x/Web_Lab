@@ -18,6 +18,7 @@ body {
 	display: flex;
 	min-height: 100%;
 	min-width: 100%;
+	flex-direction: column;
 	margin: 0;
 	background-color: var(--primary-color);
 	background: linear-gradient(
@@ -29,13 +30,19 @@ body {
 }
 #svelte {
 	min-height: 100vh;
-	min-width: 100vh;
+	min-width: 50vh;
 	display: flex;
-	flex: 1;
+	flex: 8;
+
 	justify-content: center;
 	align-items: center;
 }
+header{
+	flex: 1; 
+	background-color: var(--pure-white);
+	text-align: center;
+}
 section {
-	display: flex;
-	flex: 1;
+	min-height: 100vh;
+	min-width: 50vh;
 }
