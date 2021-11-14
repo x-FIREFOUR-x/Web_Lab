@@ -1,4 +1,6 @@
-/.idea
+# Ignore artifacts:
+build
+coverage
 # Logs
 logs
 *.log
@@ -117,10 +119,3 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-*.cache
-
-10
-functions/
-firebase/
-my-app/
-/Lab3/build/
