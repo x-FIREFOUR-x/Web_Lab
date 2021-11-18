@@ -1,5 +1,3 @@
-
-
 <script>
 
 	import formSpinner from '$lib/formSpinner.png';
@@ -73,39 +71,66 @@
 </script>
 
 
-
-<div class = "list">
-	<div class ="name-list">
+<form id ="form" method="post">
+	<h1>
 		<i><u>Завдання</u></i>
-	</div>
-	<div class = "writes-list">
-
-	</div>
-</div>	
+	</h1>
+	<input id="Add" type = "text" placeholder="Введіть ваше завдання"/>
+	<button type="submit">
+		Добавити завдання
+	</button>
+	<ul id="todos">
+		<li>jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj</li>
+		
+	</ul>
+</form>
+	
+	
 
 
 
 
 <style>
 	 *{
-
 		 margin: 2px;
 		 --bg-color: white;
 		 --border-color: black;
-		 --border-list: #f3f326;
+		 --button-color: rgb(0, 60, 255);
+		 --button-border-color: rgb(18, 5, 194);
 
 	}
-
-	.list{
-		background-color: var(--border-list);
+	form{
 		display: flex;
-		flex-direction: column;
+		flex-direction:column ;
 		justify-content: center;
+		align-items: center;
+		text-align: center;
+	}
+	h1{
+		background-color: var(--border-list);
+		flex-direction: column;
 		align-items: center;
 		
 	}
-	.name-list{
-		text-align: center;
+	button{
+		background-color: var(--button-color);
+		border-color: var(--button-border-color);
+		min-width: 0%;
 	}
-	
+	ul{
+		justify-content: left;
+		align-items: flex-start;
+		text-align: left;
+		padding: 0;
+		min-width: 100%;
+		
+	}
+	li{
+		background-color:var(--bg-color);
+		border-color: var(--border-color);
+		border:0;
+		list-style:none;
+		padding: 3px;
+		font-size: 10px;
+	}
 </style>
