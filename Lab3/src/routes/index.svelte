@@ -1,7 +1,24 @@
 <script>
 
 	import formSpinner from '$lib/formSpinner.png';
-	
+	import Task from './task.svelte';
+	import { storeFE, idIncrement } from './store.js';
+
+	$storeFE = [];
+	idIncrement.set(0);	
+	function addTask(){
+		var l = $storeFE.length;
+
+		const input = document.querySelector("input[type='text']"); 
+		let texttask = input.value;
+		if (input.value != "")
+		{
+			$storeFE[l] = {id:$idIncrement, name: 'todo',
+			otherattrib:texttask};
+			$idIncrement++;
+			input.value = "";
+		}
+	}
 
 	let form = {
 		reset: () => {}
@@ -18,23 +35,12 @@
 		errorMessage = false;
 		formBtnDisable = false;
 	}
+	
 	let FormHandler = async (e) =>{
 		formBtnDisable = true;
 		showSpinner = true;
 		statusMessage = false;
 		
-		const form = document.getElementById('form'); 
-		const ul = document.querySelector("ul.tasks");
-		const li = document.createElement("li");
-
-		const input = document.querySelector("input[type='text']"); 
-		const textSpan = document.createElement("span");
-
-        textSpan.append(input.value);
-		li.classList.add("litask");
-		ul.appendChild(li).append(textSpan);
-		input.value = "";
-
 		try{
 			await fetch('/api/sendmail',{
 				headers: {
@@ -81,12 +87,14 @@
 	<h1>
 		<i><u>Завдання</u></i>
 	</h1>
-	<input id="Add" type = "text" name="nametask" placeholder="Введіть ваше завдання" required/>
-	<button type="submit">
+	<input id="add" type = "text" name="nametask" placeholder="Введіть ваше завдання" >
+	<button on:click={addTask} type="submit">
 		Добавити завдання
 	</button>
-	<ul class="tasks" id="tasks">
-		
+	<ul id="tasks">
+		{#each $storeFE as task}
+			<svelte:component this={Task} objAttributes={task}/>
+		{/each}
 	</ul>
 </form>
 	
@@ -110,6 +118,8 @@
 		justify-content: center;
 		align-items: center;
 		text-align: center;
+		min-width: 100%;
+		min-height: 100%;
 	}
 	h1{
 		background-color: var(--border-list);
@@ -117,24 +127,28 @@
 		align-items: center;
 		
 	}
+	input {
+		background-color:var(--bg-color);
+		border:1px solid var(--border-color);
+		font-size: 20px;
+		padding: 3px;
+		min-width: 70%;
+		margin: 4px;
+	}
 	button{
 		background-color: var(--button-color);
 		border-color: var(--button-border-color);
-		min-width: 0%;
+		min-width: 50%;
+		font-size: 15px;
+		padding: 3px;
+		margin: 4px;
 	}
 	ul{
-		justify-content: left;
-		align-items: flex-start;
+		align-items: center;
 		text-align: left;
 		padding: 0;
 		min-width: 100%;
 		
 	}
-	li{
-		background-color:var(--bg-color);
-		border:1px solid var(--border-color);
-		list-style:none;
-		padding: 3px;
-		font-size: 10px;
-	}
+	
 </style>
