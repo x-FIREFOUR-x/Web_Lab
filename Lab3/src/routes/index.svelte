@@ -1,33 +1,39 @@
 <script>
 
 	import formSpinner from '$lib/formSpinner.png';
-		let form = {
-			reset: () => {}
-		}
+	
+
+	let form = {
+		reset: () => {}
+	}
 
 	let textError = "";
 	let showSpinner = false;
 	let statusMessage = false;
 	let errorMessage = false;
 	let formBtnDisable = false;
+
 	function resetFormStatus(){
 		statusMessage = false;
 		errorMessage = false;
 		formBtnDisable = false;
 	}
-	let contactFormHandler = async (e) =>{
+	let FormHandler = async (e) =>{
 		formBtnDisable = true;
 		showSpinner = true;
 		statusMessage = false;
-		const referrerVal = document.referrer;
+		
+		const form = document.getElementById('form'); 
+		const ul = document.querySelector("ul.tasks");
+		const li = document.createElement("li");
 
-		let formData = {
+		const input = document.querySelector("input[type='text']"); 
+		const textSpan = document.createElement("span");
 
-				Mame: form.elements.userName.value,
-				Email: form.elements.userEmail.value,
-				Message: form.elements.userMessage.value,
-				referrer : referrerVal
-		}
+        textSpan.append(input.value);
+		li.classList.add("litask");
+		ul.appendChild(li).append(textSpan);
+		input.value = "";
 
 		try{
 			await fetch('/api/sendmail',{
@@ -71,16 +77,15 @@
 </script>
 
 
-<form id ="form" method="post">
+<form id ="form" method="post" bind:this={form} on:submit|preventDefault={FormHandler}>
 	<h1>
 		<i><u>Завдання</u></i>
 	</h1>
-	<input id="Add" type = "text" placeholder="Введіть ваше завдання"/>
+	<input id="Add" type = "text" name="nametask" placeholder="Введіть ваше завдання" required/>
 	<button type="submit">
 		Добавити завдання
 	</button>
-	<ul id="todos">
-		<li>jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj</li>
+	<ul class="tasks" id="tasks">
 		
 	</ul>
 </form>
@@ -95,8 +100,8 @@
 		 margin: 2px;
 		 --bg-color: white;
 		 --border-color: black;
-		 --button-color: rgb(0, 60, 255);
-		 --button-border-color: rgb(18, 5, 194);
+		 --button-color: rgb(251, 255, 0);
+		 --button-border-color: rgb(255, 197, 5);
 
 	}
 	form{
@@ -127,8 +132,7 @@
 	}
 	li{
 		background-color:var(--bg-color);
-		border-color: var(--border-color);
-		border:0;
+		border:1px solid var(--border-color);
 		list-style:none;
 		padding: 3px;
 		font-size: 10px;
