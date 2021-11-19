@@ -10,7 +10,7 @@
 	}
 </script>
 <li transition:fade> 
-	{#if objAttributes.otherattrib}<em>{objAttributes.otherattrib}</em>{/if}
+	{#if objAttributes.id}<em>{objAttributes.taskText}</em>{/if}
 	<button on:click={removeComponent}>x</button>
 </li>
 

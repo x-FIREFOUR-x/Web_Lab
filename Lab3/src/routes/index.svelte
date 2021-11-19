@@ -3,27 +3,37 @@
 	import formSpinner from '$lib/formSpinner.png';
 	import Task from './task.svelte';
 	import { storeFE, idIncrement } from './store.js';
+	import {fetchGraphQL, operationsDoc, insert} from './GraphQL.js';
+	
 
 	$storeFE = [];
 	idIncrement.set(0);	
 	function addTask(){
-		var l = $storeFE.length;
-
 		const input = document.querySelector("input[type='text']"); 
-		let texttask = input.value;
+		let text = input.value;
+
 		if (input.value != "")
 		{
-			$storeFE[l] = {id:$idIncrement, name: 'todo',
-			otherattrib:texttask};
-			$idIncrement++;
-			input.value = "";
+			var l = fetchGraphQL(insert, 'MyMutation', {taskText: text});
+			l.then(function(v) {
+				idIncrement.set(v.data.insert_Tasks_one.id ); 
+				var size = $storeFE.length;
+				$storeFE[size] = {id:$idIncrement, name: 'todo', taskText:text};
+				input.value = "";
+			});
 		}
 	}
 
-	let form = {
-		reset: () => {}
-	}
 
+	function downloadTasks(){
+		let tasks = fetchGraphQL(operationsDoc).then((data)=>{
+			storeFE.set(data.data.Tasks);
+		});
+	}
+	
+	downloadTasks();
+  
+	let form;
 	let textError = "";
 	let showSpinner = false;
 	let statusMessage = false;
@@ -83,12 +93,12 @@
 </script>
 
 
-<form id ="form" method="post" bind:this={form} on:submit|preventDefault={FormHandler}>
+<form id ="form" method="post" bind:this={form} on:submit|preventDefault={addTask}>
 	<h1>
 		<i><u>Завдання</u></i>
 	</h1>
 	<input id="add" type = "text" name="nametask" placeholder="Введіть ваше завдання" >
-	<button on:click={addTask} type="submit">
+	<button  type="submit">
 		Добавити завдання
 	</button>
 	<ul id="tasks">
