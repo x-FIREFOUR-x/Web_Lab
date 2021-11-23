@@ -37,6 +37,19 @@ export async function fetchGraphQL(operationsDoc, operationName, variables) {
     }
   `;
   
+  export const delete_ = `
+  query MyQuery {
+    __typename
+  }
+  
+  mutation MyMutation($_id: Int) {
+    delete_Tasks(where: {id: {_eq: $_id}}) {
+      affected_rows
+    }
+  }
+`;
+
+
   function fetchMyQuery() {
     return fetchGraphQL(
       operationsDoc,
