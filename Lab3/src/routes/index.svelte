@@ -106,7 +106,7 @@
 		<i><u>Завдання</u></i>
 	</h1>
 	<input id="add" type = "text" name="nametask" placeholder="Введіть ваше завдання" >
-	<button  type="submit" on:click={addTask}>
+	<button  type="submit" >
 		Добавити завдання
 	</button>
 	<ul id="tasks">
