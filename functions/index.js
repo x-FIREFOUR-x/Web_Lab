@@ -33,15 +33,14 @@ exports.sendmail = functions.https.onRequest((req, res) => {
       error: "Mail name and pass are undefined"});
   }
 
-  const currentIp = req.headers["fastly-client-ip"];
-  let currentIpUser = rateLimit.ipData.get(currentIp);
   const currentTime = new Date();
 
-  if (!currentIpUser) {
-    currentIpUser =
-      {count: 0, time: currentTime - (rateLimit.timeSeconds + 1)*1000};
-    rateLimit.ipData.set(currentIp, currentIpUser);
-  }
+  const currentIp = req.headers["fastly-client-ip"];
+  const currentIpUser = rateLimit.ipData.get(currentIp) ??
+  {count: 0,
+    time: currentTime - (rateLimit.timeSeconds + 1)*1000,
+  };
+
 
   functions.logger.log(currentIpUser.count);
   functions.logger.log(currentTime - currentIpUser.time);
@@ -51,8 +50,9 @@ exports.sendmail = functions.https.onRequest((req, res) => {
     return res.status(429)
         .json({code: "429", error: "Too many sends!"});
   }
-  currentIpUser.count+=1;
+  currentIpUser.count++;
   currentIpUser.time = new Date();
+  rateLimit.ipData.set(currentIp, currentIpUser);
 
   if (!Object.keys(req.body ?? {}).length) {
     return res.status(400).json({code: "400", error: "no data passed to api"});

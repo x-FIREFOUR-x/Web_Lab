@@ -21,9 +21,11 @@
 		const referrerVal = document.referrer;
 
 		let formData = { referrer: referrerVal };
-		Array.from(form.elements).forEach((e) => {
-			formData[e.name] = e.value;
-		});
+		Array.from(form.elements)
+			.filter((e) => e.tagName !== 'BUTTON')
+			.forEach((e) => {
+				formData[e.name] = e.value;
+			});
 
 		try {
 			await fetch('/api/sendmail', {
