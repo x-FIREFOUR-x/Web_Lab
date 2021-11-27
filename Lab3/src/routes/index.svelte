@@ -1,3 +1,7 @@
+<script context="module">
+	export const ssr = false;
+</script>
+
 <script>
 
 	import formSpinner from '$lib/formSpinner.png';
@@ -5,6 +9,51 @@
 	import { storeFE, idIncrement, showSpinner } from './store.js';
 	import {fetchGraphQL, operationsDoc, insert} from './GraphQL.js';
 	
+	import { Client, createClient, defaultExchanges, subscriptionExchange } from '@urql/core';
+	import { setClient} from '@urql/svelte';
+	import { createClient as createWSClient } from 'graphql-ws';
+
+	const wsClient = createWSClient({
+ 		url: 'wss://solid-redfish-35.hasura.app/v1/graphql',
+		 headers: {'x-hasura-admin-secret':'SB0Q55wAmCt7FYVliHhmsdOM9zoq3tW3bZifkbo0TcdnyHYjhQRcYDD3MdXGjPlz'}
+	});
+
+	const client = createClient({
+  		url: 'https://solid-redfish-35.hasura.app/v1/graphql',
+		headers: {'x-hasura-admin-secret':'SB0Q55wAmCt7FYVliHhmsdOM9zoq3tW3bZifkbo0TcdnyHYjhQRcYDD3MdXGjPlz'},
+  		exchanges: [
+    		...defaultExchanges,
+    		subscriptionExchange({
+      			forwardSubscription: (operation) => ({
+        			subscribe: (sink) => ({
+          				unsubscribe: wsClient.subscribe(operation, sink),
+        			}),
+      			}),
+    		}),
+  		],
+	});
+	
+	setClient(client);
+	export const sub = operationStore(`
+  		subscription MySub {
+			newTasks {
+	  			id
+	  			taskText
+			  }
+  		}
+	`);
+
+	import { operationStore, subscription } from '@urql/svelte';
+
+	const handleSubscription = (sub = [], data) => {
+		//$storeFE = [...data.newTasks];
+		storeFE.set(...data.Tasks);
+		console.log($storeFE);
+  		return [data.newTasks, ...sub];
+	};
+	
+
+
 
 	$storeFE = [];
 	idIncrement.set(0);	
@@ -24,6 +73,7 @@
 				$storeFE[size] = {id:$idIncrement, name: 'todo', taskText:text};
 				input.value = "";
 				$showSpinner = false;
+				//subscription(sub, handleSubscription);
 			});
 		}
 	}
@@ -34,7 +84,10 @@
 		let tasks = fetchGraphQL(operationsDoc).then((data)=>{
 			storeFE.set(data.data.Tasks);
 		});
-		tasks.then(function(){$showSpinner =false});
+		tasks.then(function(){
+			$showSpinner =false; 
+		});
+		subscription(sub, handleSubscription);
 	}
 	
 	
