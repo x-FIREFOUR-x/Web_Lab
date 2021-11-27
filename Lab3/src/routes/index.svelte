@@ -47,8 +47,8 @@
 
 	const handleSubscription = (sub = [], data) => {
 		//$storeFE = [...data.newTasks];
-		storeFE.set(...data.Tasks);
-		console.log($storeFE);
+		storeFE.set(...data.newTasks);
+		console.log(storeFE);
   		return [data.newTasks, ...sub];
 	};
 	
