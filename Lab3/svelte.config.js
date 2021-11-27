@@ -24,7 +24,10 @@ const config = {
 						//rewrite:(path => path.replace(/^\/api/, ''))
 					}
 				}
-			}
+			},
+			optimizeDeps: {
+				exclude: ['@urql/svelte'],
+			  }
 		}
 	}
 };
