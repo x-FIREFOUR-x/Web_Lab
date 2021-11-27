@@ -29,38 +29,41 @@ const rateLimit = {
 exports.sendmail = functions.https.onRequest((req, res) => {
   if (!transporter) {
     functions.logger.log("Secretemail is undefined");
-    return res.status(500).json({code: "500",
-      error: "Mail name and pass are undefined"});
+    return res
+      .status(500)
+      .json({ code: "500", error: "Mail name and pass are undefined" });
   }
 
   const currentTime = new Date();
 
   const currentIp = req.headers["fastly-client-ip"];
-  const currentIpUser = rateLimit.ipData.get(currentIp) ??
-  {count: 0,
-    time: currentTime - (rateLimit.timeSeconds + 1)*1000,
+  const currentIpUser = rateLimit.ipData.get(currentIp) ?? {
+    count: 0,
+    time: currentTime - (rateLimit.timeSeconds + 1) * 1000,
   };
-
 
   functions.logger.log(currentIpUser.count);
   functions.logger.log(currentTime - currentIpUser.time);
 
-  if ((currentIpUser.count + 1 > rateLimit.ipNumberCalls) ||
-            (currentTime - currentIpUser.time <= rateLimit.timeSeconds*1000)) {
-    return res.status(429)
-        .json({code: "429", error: "Too many sends!"});
+  if (
+    currentIpUser.count + 1 > rateLimit.ipNumberCalls ||
+    currentTime - currentIpUser.time <= rateLimit.timeSeconds * 1000
+  ) {
+    return res.status(429).json({ code: "429", error: "Too many sends!" });
   }
   currentIpUser.count++;
   currentIpUser.time = new Date();
   rateLimit.ipData.set(currentIp, currentIpUser);
 
   if (!Object.keys(req.body ?? {}).length) {
-    return res.status(400).json({code: "400", error: "no data passed to api"});
+    return res
+      .status(400)
+      .json({ code: "400", error: "no data passed to api" });
   }
 
   const lines = Object.entries(req.body)
-      .map(([key, val]) => `<p><b>${key}: </b>${val}</p>`)
-      .join("\n");
+    .map(([key, val]) => `<p><b>${key}: </b>${val}</p>`)
+    .join("\n");
 
   const html = sanitizeHtml(`<h2> Message from  form: </h2>${lines}`);
 
@@ -74,8 +77,8 @@ exports.sendmail = functions.https.onRequest((req, res) => {
   transporter.sendMail(mailOptions, (error) => {
     if (error) {
       console.error("Error sending mail", error.message);
-      return res.status(500).json({code: "500", error: error.message});
+      return res.status(500).json({ code: "500", error: error.message });
     }
-    return res.status(200).json({data: "ok"});
+    return res.status(200).json({ data: "ok" });
   });
 });

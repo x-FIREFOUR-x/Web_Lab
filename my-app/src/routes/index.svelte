@@ -19,7 +19,6 @@
 		showSpinner = true;
 		statusMessage = false;
 		const referrerVal = document.referrer;
-
 		let formData = { referrer: referrerVal };
 		Array.from(form.elements)
 			.filter((e) => e.tagName !== 'BUTTON')
