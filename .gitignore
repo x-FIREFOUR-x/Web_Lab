@@ -120,12 +120,11 @@ dist
 
 .DS_Store
 node_modules
-/build
-/.svelte-kit
+build
+.svelte-kit
 /package
 /.idea
 *.cache
 
 10
-my-app
 Lab3/
