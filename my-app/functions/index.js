@@ -30,8 +30,8 @@ exports.sendmail = functions.https.onRequest((req, res) => {
   if (!transporter) {
     functions.logger.log("Secretemail is undefined");
     return res
-      .status(500)
-      .json({ code: "500", error: "Mail name and pass are undefined" });
+        .status(500)
+        .json({code: "500", error: "Mail name and pass are undefined"});
   }
 
   const currentTime = new Date();
@@ -49,7 +49,7 @@ exports.sendmail = functions.https.onRequest((req, res) => {
     currentIpUser.count + 1 > rateLimit.ipNumberCalls ||
     currentTime - currentIpUser.time <= rateLimit.timeSeconds * 1000
   ) {
-    return res.status(429).json({ code: "429", error: "Too many sends!" });
+    return res.status(429).json({code: "429", error: "Too many sends!"});
   }
   currentIpUser.count++;
   currentIpUser.time = new Date();
@@ -57,13 +57,13 @@ exports.sendmail = functions.https.onRequest((req, res) => {
 
   if (!Object.keys(req.body ?? {}).length) {
     return res
-      .status(400)
-      .json({ code: "400", error: "no data passed to api" });
+        .status(400)
+        .json({code: "400", error: "no data passed to api"});
   }
 
   const lines = Object.entries(req.body)
-    .map(([key, val]) => `<p><b>${key}: </b>${val}</p>`)
-    .join("\n");
+      .map(([key, val]) => `<p><b>${key}: </b>${val}</p>`)
+      .join("\n");
 
   const html = sanitizeHtml(`<h2> Message from  form: </h2>${lines}`);
 
@@ -77,8 +77,8 @@ exports.sendmail = functions.https.onRequest((req, res) => {
   transporter.sendMail(mailOptions, (error) => {
     if (error) {
       console.error("Error sending mail", error.message);
-      return res.status(500).json({ code: "500", error: error.message });
+      return res.status(500).json({code: "500", error: error.message});
     }
-    return res.status(200).json({ data: "ok" });
+    return res.status(200).json({data: "ok"});
   });
 });
