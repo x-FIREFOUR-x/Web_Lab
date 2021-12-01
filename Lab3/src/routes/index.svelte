@@ -15,7 +15,12 @@
 
 	const wsClient = createWSClient({
  		url: 'wss://solid-redfish-35.hasura.app/v1/graphql',
-		 headers: {'x-hasura-admin-secret':'SB0Q55wAmCt7FYVliHhmsdOM9zoq3tW3bZifkbo0TcdnyHYjhQRcYDD3MdXGjPlz'}
+		 connectionParams: {
+			headers: {
+				'content-type':'application/json',
+				'x-hasura-admin-secret':'SB0Q55wAmCt7FYVliHhmsdOM9zoq3tW3bZifkbo0TcdnyHYjhQRcYDD3MdXGjPlz'
+			},
+		 },
 	});
 
 	const client = createClient({
@@ -46,9 +51,10 @@
 	import { operationStore, subscription } from '@urql/svelte';
 
 	const handleSubscription = (sub = [], data) => {
-		//$storeFE = [...data.newTasks];
-		storeFE.set(...data.newTasks);
-		console.log(storeFE);
+		$storeFE = [...data.newTasks];
+		//storeFE.set(...data.newTasks);
+		console.log('1');
+		console.log(data.newTasks);
   		return [data.newTasks, ...sub];
 	};
 	
@@ -87,6 +93,7 @@
 		tasks.then(function(){
 			$showSpinner =false; 
 		});
+		console.log("2");
 		subscription(sub, handleSubscription);
 	}
 	
