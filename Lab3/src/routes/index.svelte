@@ -17,7 +17,6 @@
  		url: 'wss://solid-redfish-35.hasura.app/v1/graphql',
 		 connectionParams: {
 			headers: {
-				'content-type':'application/json',
 				'x-hasura-admin-secret':'SB0Q55wAmCt7FYVliHhmsdOM9zoq3tW3bZifkbo0TcdnyHYjhQRcYDD3MdXGjPlz'
 			},
 		 },
@@ -39,9 +38,9 @@
 	});
 	
 	setClient(client);
-	export const sub = operationStore(`
+	const sub = operationStore(`
   		subscription MySub {
-			newTasks {
+			Tasks {
 	  			id
 	  			taskText
 			  }
@@ -51,11 +50,12 @@
 	import { operationStore, subscription } from '@urql/svelte';
 
 	const handleSubscription = (sub = [], data) => {
-		$storeFE = [...data.newTasks];
-		//storeFE.set(...data.newTasks);
 		console.log('1');
-		console.log(data.newTasks);
-  		return [data.newTasks, ...sub];
+		$storeFE = [...data.Tasks];
+		//storeFE.set(...data.newTasks);
+		
+		console.log([...data.Tasks]);
+  		return [data.Tasks, ...sub];
 	};
 	
 
@@ -64,6 +64,7 @@
 	$storeFE = [];
 	idIncrement.set(0);	
 	downloadTasks();
+	subscription(sub, handleSubscription);
 
 	function addTask(){
 		const input = document.querySelector("input[type='text']"); 
@@ -94,7 +95,7 @@
 			$showSpinner =false; 
 		});
 		console.log("2");
-		subscription(sub, handleSubscription);
+		//subscription(sub, handleSubscription);
 	}
 	
 	
