@@ -50,11 +50,7 @@
 	import { operationStore, subscription } from '@urql/svelte';
 
 	const handleSubscription = (sub = [], data) => {
-		console.log('1');
 		$storeFE = [...data.Tasks];
-		//storeFE.set(...data.newTasks);
-		
-		console.log([...data.Tasks]);
   		return [data.Tasks, ...sub];
 	};
 	
@@ -64,7 +60,7 @@
 	$storeFE = [];
 	idIncrement.set(0);	
 	downloadTasks();
-	subscription(sub, handleSubscription);
+	//subscription(sub, handleSubscription);
 
 	function addTask(){
 		const input = document.querySelector("input[type='text']"); 
@@ -94,8 +90,7 @@
 		tasks.then(function(){
 			$showSpinner =false; 
 		});
-		console.log("2");
-		//subscription(sub, handleSubscription);
+		subscription(sub, handleSubscription);
 	}
 	
 	
