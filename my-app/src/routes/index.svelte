@@ -7,11 +7,9 @@
 	let textError = '';
 	let showSpinner = false;
 	let statusMessage = false;
-	let errorMessage = false;
 	let formBtnDisable = false;
 	function resetFormStatus() {
 		statusMessage = false;
-		errorMessage = false;
 		formBtnDisable = false;
 	}
 	let contactFormHandler = async (e) => {
@@ -50,7 +48,6 @@
 				textError = 'Send too many mail';
 			}
 			statusMessage = false;
-			errorMessage = true;
 			console.log(e);
 		} finally {
 			showSpinner = false;
@@ -84,7 +81,7 @@
 			Message sent!
 			<button class="button class-btn" on:click={resetFormStatus}> &times; </button>
 		</p>
-	{:else if errorMessage}
+	{:else if textError != ""}
 		<p class="status-text error">
 			{textError}
 			<button class="button class-btn" on:click={resetFormStatus}> &times; </button>
