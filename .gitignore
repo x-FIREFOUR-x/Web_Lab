@@ -117,10 +117,14 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+.DS_Store
+node_modules
+build
+.svelte-kit
+/package
+/.idea
 *.cache
 
 10
-functions/
-firebase/
-my-app/
-/Lab3/build/
+Lab3/
