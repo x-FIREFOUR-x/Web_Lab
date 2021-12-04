@@ -7,7 +7,6 @@
 	import Task from './task.svelte';
 	import { storeFE, idIncrement, showSpinner } from './store.js';
 	import { fetchGraphQL, operationsDoc, insert } from './GraphQL.js';
-
 	import { Client, createClient, defaultExchanges, subscriptionExchange } from '@urql/core';
 	import { setClient } from '@urql/svelte';
 	import { createClient as createWSClient } from 'graphql-ws';
