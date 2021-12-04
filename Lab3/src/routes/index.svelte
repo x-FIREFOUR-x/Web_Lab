@@ -14,17 +14,17 @@
 	import { createClient as createWSClient } from 'graphql-ws';
 
 	const wsClient = createWSClient({
- 		url: 'wss://solid-redfish-35.hasura.app/v1/graphql',
+ 		url: import.meta.env.VITE_API_WSS_ENDPOINT,
 		 connectionParams: {
 			headers: {
-				'x-hasura-admin-secret':'SB0Q55wAmCt7FYVliHhmsdOM9zoq3tW3bZifkbo0TcdnyHYjhQRcYDD3MdXGjPlz'
+				'x-hasura-admin-secret':import.meta.env.VITE_API_HASURA_ADMIN_SECRET,
 			},
 		 },
 	});
 
 	const client = createClient({
-  		url: 'https://solid-redfish-35.hasura.app/v1/graphql',
-		headers: {'x-hasura-admin-secret':'SB0Q55wAmCt7FYVliHhmsdOM9zoq3tW3bZifkbo0TcdnyHYjhQRcYDD3MdXGjPlz'},
+  		url: import.meta.env.VITE_API_HTTPS_ENDPOINT,
+		headers: {'x-hasura-admin-secret':import.meta.env.VITE_API_HASURA_ADMIN_SECRET},
   		exchanges: [
     		...defaultExchanges,
     		subscriptionExchange({
@@ -60,7 +60,6 @@
 	$storeFE = [];
 	idIncrement.set(0);	
 	downloadTasks();
-	//subscription(sub, handleSubscription);
 
 	function addTask(){
 		const input = document.querySelector("input[type='text']"); 
@@ -76,7 +75,6 @@
 				$storeFE[size] = {id:$idIncrement, name: 'todo', taskText:text};
 				input.value = "";
 				$showSpinner = false;
-				//subscription(sub, handleSubscription);
 			});
 		}
 	}

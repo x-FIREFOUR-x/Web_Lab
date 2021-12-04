@@ -5,10 +5,10 @@ to your service.
 
 export async function fetchGraphQL(operationsDoc, operationName, variables) {
     const result = await fetch(
-      "https://solid-redfish-35.hasura.app/v1/graphql",
+      import.meta.env.VITE_API_HTTPS_ENDPOINT,
       {
         method: "POST",
-        headers: {'x-hasura-admin-secret':'SB0Q55wAmCt7FYVliHhmsdOM9zoq3tW3bZifkbo0TcdnyHYjhQRcYDD3MdXGjPlz'},
+        headers: {'x-hasura-admin-secret':import.meta.env.VITE_API_HASURA_ADMIN_SECRET},
         body: JSON.stringify({
           query: operationsDoc,
           variables: variables,
