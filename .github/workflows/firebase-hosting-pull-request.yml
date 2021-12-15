@@ -18,4 +18,4 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_LAB4_O_P }}'
           projectId: lab4-o-p
-          entryPoint: ./lab4
+          entryPoint: ./Lab4
