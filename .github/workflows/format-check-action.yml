@@ -2,7 +2,7 @@ name: Format checking
 on:
     pull_request:
         branches:
-            - lab1
+            - lab4
 jobs:
     build_and_preview:
         runs-on: ubuntu-latest
