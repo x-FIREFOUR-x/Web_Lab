@@ -3,6 +3,11 @@ This is an example snippet - you should consider tailoring it
 to your service.
 */
 
+export function errorHandler(){
+  showeror = true;
+  alert("fffffff");
+}
+
 export async function fetchGraphQL(operationsDoc, operationName, variables) {
 	const result = await fetch(import.meta.env.VITE_API_HTTPS_ENDPOINT, {
 		method: 'POST',
