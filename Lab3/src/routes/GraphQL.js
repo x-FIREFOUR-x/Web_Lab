@@ -3,10 +3,11 @@ This is an example snippet - you should consider tailoring it
 to your service.
 */
 
-export function errorHandler(){
-  showeror = true;
-  alert("fffffff");
+import { showSpinner, showeror} from "./store.js";
+function errorHandler(){
+  showeror.set(true);
 }
+
 
 export async function fetchGraphQL(operationsDoc, operationName, variables) {
 	const result = await fetch(import.meta.env.VITE_API_HTTPS_ENDPOINT, {
@@ -17,7 +18,11 @@ export async function fetchGraphQL(operationsDoc, operationName, variables) {
 			variables: variables,
 			operationName: operationName
 		})
-	});
+	}).catch(function(e) {
+    console.log("catch works:");
+    console.log(e); 
+    errorHandler();
+  });
 
 	return await result.json();
 }

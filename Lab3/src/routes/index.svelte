@@ -5,8 +5,8 @@
 <script>
 	import formSpinner from '$lib/formSpinner.png';
 	import Task from './task.svelte';
-	import { storeFE, idIncrement, showSpinner, showeror } from './store.js';
-	import { fetchGraphQL, operationsDoc, insert, errorHandler } from './GraphQL.js';
+	import { storeFE, idIncrement, showSpinner, showeror} from './store.js';
+	import { fetchGraphQL, operationsDoc, insert} from './GraphQL.js';
 	import { Client, createClient, defaultExchanges, subscriptionExchange } from '@urql/core';
 	import { setClient } from '@urql/svelte';
 	import { createClient as createWSClient } from 'graphql-ws';
@@ -86,11 +86,12 @@
 		subscription(sub, handleSubscription);
 	}
 
-	let form
+	let form;
 </script>
 
 {#if $showeror}
 	<h1> Ошибка </h1>
+
 {:else if !$showSpinner}
 	<form id="form" method="post" bind:this={form} on:submit|preventDefault={addTask}>
 		<h1>
