@@ -5,37 +5,35 @@ to your service.
 
 import { showSpinner, showeror, token } from './store.js';
 //import{token} from "..store";
-import{get} from "svelte/store";
+import { get } from 'svelte/store';
 
 function errorHandler() {
 	showeror.set(true);
-  showSpinner.set(false);
+	showSpinner.set(false);
 }
 
+//API_URL = import.meta.env.VITE_API_HTTPS_ENDPOINT;
 
-	//API_URL = import.meta.env.VITE_API_HTTPS_ENDPOINT;
+export async function fetchGraphQL(operationsDoc, operationName, variables) {
+	const result = await fetch(import.meta.env.VITE_API_HTTPS_ENDPOINT, {
+		method: 'POST',
+		body: JSON.stringify({
+			query: operationsDoc,
+			variables: variables,
+			operationName: operationName
+		}),
+		headers: {
+			Authorization: `Bearer ${get(token)}`
+			//'x-hasura-admin-secret': import.meta.env.VITE_API_HASURA_ADMIN_SECRET
+		}
+	}).catch(function (e) {
+		console.log('catch works:');
+		console.log(e);
+		errorHandler();
+	});
 
-	export async function fetchGraphQL(operationsDoc, operationName, variables) {
-		const result = await fetch(import.meta.env.VITE_API_HTTPS_ENDPOINT, {
-			method: 'POST',
-			body: JSON.stringify({
-				query: operationsDoc,
-				variables: variables,
-				operationName: operationName
-			}),
-			headers: { 
-				Authorization: `Bearer ${get(token)}`,
-				//'x-hasura-admin-secret': import.meta.env.VITE_API_HASURA_ADMIN_SECRET 
-			},
-			
-		}).catch(function (e) {
-			console.log('catch works:');
-			console.log(e);
-			errorHandler();
-		});
-
-		return await result.json();
-	}
+	return await result.json();
+}
 
 export const operationsDoc = `
     query MyQuery {
@@ -48,19 +46,19 @@ export const operationsDoc = `
   `;
 
 export const insert = `
-    mutation MyMutation($taskText: String = "") {
-    insert_Todo_one(object: {taskText: $taskText}) {
-      id
+  	mutation MyMutation($taskText: String = "") {
+    	insert_Todo_one(object: {taskText: $taskText}) {
+      		id
+    	}
     }
-    }
-  `;
+`;
 
 export const delete_ = `
   query MyQuery {
     __typename
   }
   
-  mutation MyMutation($_id: Int) {
+  mutation MyMutation($_id: uuid) {
     delete_Todo(where: {id: {_eq: $_id}}) {
       affected_rows
     }

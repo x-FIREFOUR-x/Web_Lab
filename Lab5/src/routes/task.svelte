@@ -8,12 +8,15 @@
 	function removeComponent() {
 		$showSpinner = true;
 		var l;
+		console.log($storeFE);
 		$storeFE = $storeFE.filter(function (value) {
 			if (value.id != objAttributes.id) return value;
 			l = fetchGraphQL(delete_, 'MyMutation', { _id: value.id }).then(function () {
 				$showSpinner = false;
 			});
 		});
+		console.log(objAttributes.id);
+		console.log($storeFE);
 	}
 </script>
 

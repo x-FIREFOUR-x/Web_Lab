@@ -5,44 +5,50 @@
 <script>
 	import formSpinner from '$lib/formSpinner.png';
 	import Todo from './task.svelte';
-	import { storeFE, idIncrement, showSpinner, showeror, isAuthenticated, user, token } from './store.js';
+	import {
+		storeFE,
+		idIncrement,
+		showSpinner,
+		showeror,
+		isAuthenticated,
+		user,
+		token
+	} from './store.js';
 	import { fetchGraphQL, operationsDoc, insert } from './GraphQL.js';
-	import auth from "./auth-service";
+	import auth from './auth-service';
 	import { get } from 'svelte/store';
 	import { onMount } from 'svelte';
 
-
-
-	window.onload = async() => {
-		if(get(isAuthenticated)){
-			downloadTasks()
+	window.onload = async () => {
+		if (get(isAuthenticated)) {
+			downloadTasks();
 		}
 	};
 
-	token.subscribe(async(tokenValue)=>{
-		if(tokenValue !== ""){
-			downloadTasks()
+	token.subscribe(async (tokenValue) => {
+		if (tokenValue !== '') {
+			downloadTasks();
 		}
 	});
 
 	let auth0Client;
-	onMount(async () =>{
+	onMount(async () => {
 		auth0Client = await auth.createClient();
 		isAuthenticated.set(await auth0Client.isAuthenticated());
 		const accessToken = await auth0Client.getIdTokenClaims();
-		if(accessToken){
+		if (accessToken) {
 			token.set(accessToken.__raw);
 			downloadTasks();
 		}
 		user.set(await auth0Client.getUser());
 	});
 
-	function login(){
+	function login() {
 		auth.loginWithPopup(auth0Client);
 	}
 
-	function logout(){
-		token.set("");
+	function logout() {
+		token.set('');
 		auth.logout(auth0Client);
 	}
 
@@ -60,17 +66,16 @@
 			l.then(function (v) {
 				idIncrement.set(v.data.insert_Todo_one.id);
 				var size = $storeFE.length;
-				$storeFE[size] = { id: $idIncrement, name: 'todo', taskText: text };
+				$storeFE[size] = { id: $idIncrement, name: 'task', taskText: text };
 				input.value = '';
 				$showSpinner = false;
 			});
 		}
 	}
 
-	function downloadTasks() {
+	export function downloadTasks() {
 		$showSpinner = true;
-		let tasks = fetchGraphQL(operationsDoc,"MyQuery").then((data) => {
-			console.log(data);
+		let tasks = fetchGraphQL(operationsDoc, 'MyQuery').then((data) => {
 			storeFE.set(data.data.Todo);
 		});
 		tasks.then(function () {
@@ -80,7 +85,7 @@
 
 	let offline = false;
 	window.onoffline = () => {
-		offline= true;
+		offline = true;
 	};
 	window.ononline = () => {
 		offline = false;
@@ -88,30 +93,29 @@
 
 	let form;
 </script>
+
 {#if offline}
-	<h1> Перевірте своє інтернет підключення</h1>
-{:else}
-	{#if $isAuthenticated}
-		{#if !$showSpinner}
-			<form id="form" method="post" bind:this={form} on:submit|preventDefault={addTask}>
-				<h1>
-					<i><u>Завдання</u></i>
-				</h1>
-				<button on:click={logout}> Вийти з профіля </button>
-				<input id="add" type="text" name="nametask" placeholder="Введіть ваше завдання" />
-				<button type="submit"> Добавити завдання </button>
-				<ul id="tasks">
-					{#each $storeFE as task}
-						<svelte:component this={Todo} objAttributes={task} />
-					{/each}
-				</ul>
-			</form>
-		{:else if $showSpinner}
-			<img src={formSpinner} alt="spinner" />
-		{/if}
-	{:else}
-			<button on:click = {login}> Log in </button>
+	<h1>Перевірте своє інтернет підключення</h1>
+{:else if $isAuthenticated}
+	{#if !$showSpinner}
+		<form id="form" method="post" bind:this={form} on:submit|preventDefault={addTask}>
+			<h1>
+				<i><u>Завдання</u></i>
+			</h1>
+			<button on:click={logout}> Вийти з профіля </button>
+			<input id="add" type="text" name="nametask" placeholder="Введіть ваше завдання" />
+			<button type="submit"> Добавити завдання </button>
+			<ul id="tasks">
+				{#each $storeFE as task}
+					<svelte:component this={Todo} objAttributes={task} />
+				{/each}
+			</ul>
+		</form>
+	{:else if $showSpinner}
+		<img src={formSpinner} alt="spinner" />
 	{/if}
+{:else}
+	<button on:click={login}> Log in </button>
 {/if}
 
 <style>
