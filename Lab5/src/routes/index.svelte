@@ -96,26 +96,28 @@
 
 {#if offline}
 	<h1>Перевірте своє інтернет підключення</h1>
-{:else if $isAuthenticated}
-	{#if !$showSpinner}
-		<form id="form" method="post" bind:this={form} on:submit|preventDefault={addTask}>
-			<h1>
-				<i><u>Завдання</u></i>
-			</h1>
-			<button on:click={logout}> Вийти з профіля </button>
-			<input id="add" type="text" name="nametask" placeholder="Введіть ваше завдання" />
-			<button type="submit"> Добавити завдання </button>
-			<ul id="tasks">
-				{#each $storeFE as task}
-					<svelte:component this={Todo} objAttributes={task} />
-				{/each}
-			</ul>
-		</form>
-	{:else if $showSpinner}
-		<img src={formSpinner} alt="spinner" />
+{:else if !offline}
+	{#if $isAuthenticated}
+		{#if !$showSpinner}
+			<form id="form" method="post" bind:this={form} on:submit|preventDefault={addTask}>
+				<h1>
+					<i><u>Завдання</u></i>
+				</h1>
+				<button on:click={logout}> Вийти з профіля </button>
+				<input id="add" type="text" name="nametask" placeholder="Введіть ваше завдання" />
+				<button type="submit"> Добавити завдання </button>
+				<ul id="tasks">
+					{#each $storeFE as task}
+						<svelte:component this={Todo} objAttributes={task} />
+					{/each}
+				</ul>
+			</form>
+		{:else if $showSpinner}
+			<img src={formSpinner} alt="spinner" />
+		{/if}
+	{:else if !$isAuthenticated}
+		<button on:click={login}> Log in </button>
 	{/if}
-{:else}
-	<button on:click={login}> Log in </button>
 {/if}
 
 <style>
