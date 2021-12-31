@@ -3,42 +3,53 @@ This is an example snippet - you should consider tailoring it
 to your service.
 */
 
-import { showSpinner, showeror } from './store.js';
+import { showSpinner, showeror, token } from './store.js';
+//import{token} from "..store";
+import{get} from "svelte/store";
+
 function errorHandler() {
 	showeror.set(true);
   showSpinner.set(false);
 }
 
-export async function fetchGraphQL(operationsDoc, operationName, variables) {
-	const result = await fetch(import.meta.env.VITE_API_HTTPS_ENDPOINT, {
-		method: 'POST',
-		headers: { 'x-hasura-admin-secret': import.meta.env.VITE_API_HASURA_ADMIN_SECRET },
-		body: JSON.stringify({
-			query: operationsDoc,
-			variables: variables,
-			operationName: operationName
-		})
-	}).catch(function (e) {
-		console.log('catch works:');
-		console.log(e);
-		errorHandler();
-	});
 
-	return await result.json();
-}
+	//API_URL = import.meta.env.VITE_API_HTTPS_ENDPOINT;
+
+	export async function fetchGraphQL(operationsDoc, operationName, variables) {
+		const result = await fetch(import.meta.env.VITE_API_HTTPS_ENDPOINT, {
+			method: 'POST',
+			body: JSON.stringify({
+				query: operationsDoc,
+				variables: variables,
+				operationName: operationName
+			}),
+			headers: { 
+				Authorization: `Bearer ${get(token)}`,
+				//'x-hasura-admin-secret': import.meta.env.VITE_API_HASURA_ADMIN_SECRET 
+			},
+			
+		}).catch(function (e) {
+			console.log('catch works:');
+			console.log(e);
+			errorHandler();
+		});
+
+		return await result.json();
+	}
 
 export const operationsDoc = `
     query MyQuery {
-      Tasks {
+      Todo {
         id
         taskText
+		user_id
       }
     }
   `;
 
 export const insert = `
     mutation MyMutation($taskText: String = "") {
-    insert_Tasks_one(object: {taskText: $taskText}) {
+    insert_Todo_one(object: {taskText: $taskText}) {
       id
     }
     }
@@ -50,7 +61,7 @@ export const delete_ = `
   }
   
   mutation MyMutation($_id: Int) {
-    delete_Tasks(where: {id: {_eq: $_id}}) {
+    delete_Todo(where: {id: {_eq: $_id}}) {
       affected_rows
     }
   }

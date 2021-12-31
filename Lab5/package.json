@@ -8,7 +8,8 @@
 		"lint": "eslint . --no-error-on-unmatched-pattern --ignore-path .gitignore",
 		"lint:fix": "eslint . --no-error-on-unmatched-pattern --fix --ignore-path .gitignore",
 		"format": "prettier --check . --ignore-path .gitignore",
-		"format:fix": "prettier . --write --ignore-path .gitignore"
+		"format:fix": "prettier . --write --ignore-path .gitignore",
+		"start": "sirv public --no-clear"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-static": "^1.0.0-next.21",
@@ -18,7 +19,14 @@
 		"eslint-plugin-svelte3": "^3.2.1",
 		"prettier": "^2.4.1",
 		"prettier-plugin-svelte": "^2.4.0",
-		"svelte": "^3.44.2"
+		"svelte": "^3.44.2",
+		"@rollup/plugin-commonjs": "^17.0.0",
+		"@rollup/plugin-node-resolve": "^11.0.0",
+		"rollup": "^2.60.0",
+		"rollup-plugin-css-only": "^3.1.0",
+		"rollup-plugin-livereload": "^2.0.0",
+		"rollup-plugin-terser": "^7.0.0",
+		"rollup-plugin-svelte": "^7.1.0"
 	},
 	"type": "module",
 	"dependencies": {
@@ -28,6 +36,8 @@
 		"cookie": "^0.4.1",
 		"graphql": "^16.0.1",
 		"graphql-ws": "^5.5.5",
-		"urql": "^2.0.5"
+		"urql": "^2.0.5",
+		"@auth0/auth0-spa-js": "^1.19.3",
+		"sirv-cli": "^1.0.0"
 	}
 }
