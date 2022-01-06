@@ -130,7 +130,7 @@ header input {
 	header input:checked ~ nav {
 		display: block;
 	}
-	header input:checked ~ .backdrop {
+	header input:checked ~ .backdroper {
 		display: block;
 	}
 	header input:checked ~ nav a {
