@@ -66,7 +66,7 @@
 
 			l.then(function (v) {
 				idIncrement.set(v.data.insert_Tasks_one.id);
-				var size = $storeFE.length;
+				let size = $storeFE.length;
 				$storeFE[size] = { id: $idIncrement, name: 'todo', taskText: text };
 				input.value = '';
 				$showSpinner = false;
@@ -108,7 +108,7 @@
 			<input id="add" type="text" name="nametask" placeholder="Введіть ваше завдання" />
 			<button type="submit"> Добавити завдання </button>
 			<ul id="tasks">
-				{#each $storeFE as task}
+				{#each $storeFE as task(task.id)}
 					<svelte:component this={Task} objAttributes={task} />
 				{/each}
 			</ul>
