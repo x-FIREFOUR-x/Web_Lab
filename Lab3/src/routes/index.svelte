@@ -5,7 +5,7 @@
 <script>
 	import formSpinner from '$lib/formSpinner.png';
 	import Task from './task.svelte';
-	import { storeFE, idtask, showSpinner } from './store.js';
+	import { storeFE, idtask, showSpinner, showeror } from './store.js';
 	import { fetchGraphQL, operationsDoc, insert } from './GraphQL.js';
 	import { Client, createClient, defaultExchanges, subscriptionExchange } from '@urql/core';
 	import { setClient } from '@urql/svelte';
@@ -98,7 +98,9 @@
 {#if offline}
 	<h1>Ошибка перевірте інтернет підключення</h1>
 {:else if !offline}
-	{#if !$showSpinner}
+	{#if $showeror}
+		<h1>Ошибка</h1>
+	{:else if !$showSpinner}
 		<form id="form" method="post" bind:this={form} on:submit|preventDefault={addTask}>
 			<h1>
 				<i><u>Завдання</u></i>

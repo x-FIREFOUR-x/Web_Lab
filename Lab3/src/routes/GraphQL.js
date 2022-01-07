@@ -3,6 +3,13 @@ This is an example snippet - you should consider tailoring it
 to your service.
 */
 
+import { showSpinner, showeror } from './store.js';
+
+function errorHandler() {
+	showeror.set(true);
+	showSpinner.set(false);
+}
+
 export async function fetchGraphQL(operationsDoc, operationName, variables) {
 	const result = await fetch(import.meta.env.VITE_API_HTTPS_ENDPOINT, {
 		method: 'POST',
@@ -55,9 +62,6 @@ export default async function startFetchMyQuery() {
 
 	if (errors) {
 		// handle those errors like a pro
-		console.error(errors);
+		errorHandler();
 	}
-
-	// do something great with this precious data
-	console.log(data);
 }

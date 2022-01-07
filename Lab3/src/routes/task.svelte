@@ -6,7 +6,6 @@
 
 	function removeComponent() {
 		$showSpinner = true;
-		console.log(objAttributes.id);
 		fetchGraphQL(delete_, 'MyMutation', { _id: objAttributes.id }).then(function () {
 			$showSpinner = false;
 			$storeFE = $storeFE.filter(function (value) {
