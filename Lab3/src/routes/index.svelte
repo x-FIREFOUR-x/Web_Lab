@@ -85,26 +85,37 @@
 		subscription(sub, handleSubscription);
 	}
 
+	let offline = false;
+	window.onoffline = () => {
+		offline = true;
+	};
+	window.ononline = () => {
+		offline = false;
+	};
+
+
 	let form;
 </script>
 
-{#if $showeror}
-	<h1>Ошибка</h1>
-{:else if !$showSpinner}
-	<form id="form" method="post" bind:this={form} on:submit|preventDefault={addTask}>
-		<h1>
-			<i><u>Завдання</u></i>
-		</h1>
-		<input id="add" type="text" name="nametask" placeholder="Введіть ваше завдання" />
-		<button type="submit"> Добавити завдання </button>
-		<ul id="tasks">
-			{#each $storeFE as task}
-				<svelte:component this={Task} objAttributes={task} />
-			{/each}
-		</ul>
-	</form>
-{:else if $showSpinner}
-	<img src={formSpinner} alt="spinner" />
+{#if offline}
+	<h1>Ошибка перевірте інтернет підключення</h1>
+{:else if !offline}
+	{#if !$showSpinner}
+		<form id="form" method="post" bind:this={form} on:submit|preventDefault={addTask}>
+			<h1>
+				<i><u>Завдання</u></i>
+			</h1>
+			<input id="add" type="text" name="nametask" placeholder="Введіть ваше завдання" />
+			<button type="submit"> Добавити завдання </button>
+			<ul id="tasks">
+				{#each $storeFE as task}
+					<svelte:component this={Task} objAttributes={task} />
+				{/each}
+			</ul>
+		</form>
+	{:else if $showSpinner}
+		<img src={formSpinner} alt="spinner" />
+	{/if}
 {/if}
 
 <style>

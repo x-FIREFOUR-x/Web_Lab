@@ -7,17 +7,17 @@
 
 	function removeComponent() {
 		$showSpinner = true;
-		var l;
 		$storeFE = $storeFE.filter(function (value) {
-			if (value.id != objAttributes.id) return value;
-			l = fetchGraphQL(delete_, 'MyMutation', { _id: value.id }).then(function () {
+			if (value.id != objAttributes.id) 
+				return value;
+			fetchGraphQL(delete_, 'MyMutation', { _id: value.id }).then(function () {
 				$showSpinner = false;
 			});
 		});
 	}
 </script>
 
-<li transition:fade>
+<li transition>
 	{#if objAttributes.id}<em>{objAttributes.taskText}</em>{/if}
 	<button on:click={removeComponent}>x</button>
 </li>
