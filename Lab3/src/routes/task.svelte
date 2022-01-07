@@ -1,17 +1,16 @@
 <script>
 	import { fetchGraphQL, delete_ } from './GraphQL.js';
-	import { fade } from 'svelte/transition';
 	import { storeFE, showSpinner } from './store.js';
 
 	export let objAttributes = {};
 
 	function removeComponent() {
 		$showSpinner = true;
-		$storeFE = $storeFE.filter(function (value) {
-			if (value.id != objAttributes.id) 
-				return value;
-			fetchGraphQL(delete_, 'MyMutation', { _id: value.id }).then(function () {
-				$showSpinner = false;
+		console.log(objAttributes.id);
+		fetchGraphQL(delete_, 'MyMutation', { _id: objAttributes.id }).then(function () {
+			$showSpinner = false;
+			$storeFE = $storeFE.filter(function (value) {
+				if (value.id != objAttributes.id) return value;
 			});
 		});
 	}

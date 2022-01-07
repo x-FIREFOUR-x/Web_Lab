@@ -5,7 +5,7 @@
 <script>
 	import formSpinner from '$lib/formSpinner.png';
 	import Task from './task.svelte';
-	import { storeFE, idIncrement, showSpinner, showeror } from './store.js';
+	import { storeFE, idtask, showSpinner } from './store.js';
 	import { fetchGraphQL, operationsDoc, insert } from './GraphQL.js';
 	import { Client, createClient, defaultExchanges, subscriptionExchange } from '@urql/core';
 	import { setClient } from '@urql/svelte';
@@ -53,7 +53,6 @@
 	};
 
 	$storeFE = [];
-	idIncrement.set(0);
 	downloadTasks();
 
 	function addTask() {
@@ -65,9 +64,9 @@
 			var l = fetchGraphQL(insert, 'MyMutation', { taskText: text });
 
 			l.then(function (v) {
-				idIncrement.set(v.data.insert_Tasks_one.id);
+				idtask.set(v.data.insert_Tasks_one.id);
 				let size = $storeFE.length;
-				$storeFE[size] = { id: $idIncrement, name: 'todo', taskText: text };
+				$storeFE[size] = { id: $idtask, name: 'todo', taskText: text };
 				input.value = '';
 				$showSpinner = false;
 			});
@@ -93,7 +92,6 @@
 		offline = false;
 	};
 
-
 	let form;
 </script>
 
@@ -108,7 +106,7 @@
 			<input id="add" type="text" name="nametask" placeholder="Введіть ваше завдання" />
 			<button type="submit"> Добавити завдання </button>
 			<ul id="tasks">
-				{#each $storeFE as task(task.id)}
+				{#each $storeFE as task (task.id)}
 					<svelte:component this={Task} objAttributes={task} />
 				{/each}
 			</ul>

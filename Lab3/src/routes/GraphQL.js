@@ -28,18 +28,18 @@ export const operationsDoc = `
 
 export const insert = `
     mutation MyMutation($taskText: String = "") {
-    insert_Tasks_one(object: {taskText: $taskText}) {
-      id
+    	insert_Tasks_one(object: {taskText: $taskText}) {
+      		id
+    	}
     }
-    }
-  `;
+`;
 
 export const delete_ = `
   query MyQuery {
     __typename
   }
   
-  mutation MyMutation($_id: Int) {
+  mutation MyMutation($_id: uuid) {
     delete_Tasks(where: {id: {_eq: $_id}}) {
       affected_rows
     }
