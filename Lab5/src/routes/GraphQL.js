@@ -4,15 +4,12 @@ to your service.
 */
 
 import { showSpinner, showeror, token } from './store.js';
-//import{token} from "..store";
 import { get } from 'svelte/store';
 
 function errorHandler() {
 	showeror.set(true);
 	showSpinner.set(false);
 }
-
-//API_URL = import.meta.env.VITE_API_HTTPS_ENDPOINT;
 
 export async function fetchGraphQL(operationsDoc, operationName, variables) {
 	const result = await fetch(import.meta.env.VITE_API_HTTPS_ENDPOINT, {
@@ -73,8 +70,7 @@ export default async function startFetchMyQuery() {
 	const { errors, data } = await fetchMyQuery();
 
 	if (errors) {
-		// handle those errors like a pro
-		console.error(errors);
+		errorHandler();
 	}
 
 	// do something great with this precious data

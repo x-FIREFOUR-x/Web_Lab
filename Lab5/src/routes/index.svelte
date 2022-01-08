@@ -7,12 +7,12 @@
 	import Todo from './task.svelte';
 	import {
 		storeFE,
-		idIncrement,
+		idtask,
 		showSpinner,
-		showeror,
 		isAuthenticated,
 		user,
-		token
+		token,
+		showeror
 	} from './store.js';
 	import { fetchGraphQL, operationsDoc, insert } from './GraphQL.js';
 	import auth from './auth-service';
@@ -53,7 +53,6 @@
 	}
 
 	$storeFE = [];
-	idIncrement.set(0);
 
 	function addTask() {
 		const input = document.querySelector("input[type='text']");
@@ -64,9 +63,9 @@
 			var l = fetchGraphQL(insert, 'MyMutation', { taskText: text });
 
 			l.then(function (v) {
-				idIncrement.set(v.data.insert_Todo_one.id);
-				var size = $storeFE.length;
-				$storeFE[size] = { id: $idIncrement, name: 'task', taskText: text };
+				idtask.set(v.data.insert_Todo_one.id);
+				let size = $storeFE.length;
+				$storeFE[size] = { id: $idtask, name: 'task', taskText: text };
 				input.value = '';
 				$showSpinner = false;
 			});
@@ -107,13 +106,15 @@
 				<input id="add" type="text" name="nametask" placeholder="Введіть ваше завдання" />
 				<button type="submit"> Добавити завдання </button>
 				<ul id="tasks">
-					{#each $storeFE as task}
+					{#each $storeFE as task (task.id)}
 						<svelte:component this={Todo} objAttributes={task} />
 					{/each}
 				</ul>
 			</form>
 		{:else if $showSpinner}
 			<img src={formSpinner} alt="spinner" />
+		{:else if $showeror}
+			<h1>Помилка</h1>
 		{/if}
 	{:else if !$isAuthenticated}
 		<button on:click={login}> Log in </button>

@@ -1,6 +1,5 @@
 <script>
 	import { fetchGraphQL, delete_ } from './GraphQL.js';
-	import { fade } from 'svelte/transition';
 	import { storeFE, showSpinner } from './store.js';
 
 	export let objAttributes = {};
@@ -13,7 +12,7 @@
 			$storeFE = $storeFE.filter(function (value) {
 				if (value.id != objAttributes.id) return value;
 			});
-		});	
+		});
 	}
 </script>
 
