@@ -107,7 +107,13 @@
 					<i><u>Завдання</u></i>
 				</h1>
 				<button on:click={logout}> Вийти з профіля </button>
-				<input id="add" type="text" name="nametask" placeholder="Введіть ваше завдання" />
+				<input
+					id="add"
+					type="text"
+					name="nametask"
+					maxlength="25"
+					placeholder="Введіть ваше завдання"
+				/>
 				<button type="submit"> Добавити завдання </button>
 				<ul id="tasks">
 					{#each $storeFE as task (task.id)}

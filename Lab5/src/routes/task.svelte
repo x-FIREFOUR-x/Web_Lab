@@ -9,9 +9,13 @@
 
 		fetchGraphQL(delete_, 'MyMutation', { _id: objAttributes.id })
 			.then(function () {
-				$storeFE = $storeFE.filter((value) => {
-					if (value.id != objAttributes.id) return value;
-				});
+				let indexOfTask = $storeFE.findIndex((task) => task.id === objAttributes.id);
+				if (indexOfTask >= 0) {
+					$storeFE = [
+						...$storeFE.slice(0, indexOfTask),
+						...$storeFE.slice(indexOfTask + 1)
+					];
+				}
 			})
 			.catch(errorHandler)
 			.finally(() => {
