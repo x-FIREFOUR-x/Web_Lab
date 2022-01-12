@@ -7,7 +7,6 @@ import { showSpinner, showeror } from './store.js';
 
 export function errorHandler() {
 	showeror.set(true);
-	showSpinner.set(false);
 }
 
 export async function fetchGraphQL(operationsDoc, operationName, variables) {
