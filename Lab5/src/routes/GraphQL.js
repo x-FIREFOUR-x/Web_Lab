@@ -1,13 +1,9 @@
-/*
-This is an example snippet - you should consider tailoring it
-to your service.
-*/
-
 import { showSpinner, showeror, token } from './store.js';
 import { get } from 'svelte/store';
 
 export function errorHandler() {
 	showeror.set(true);
+	setTimeout(() => showeror.set(false), 1800);
 }
 
 export async function fetchGraphQL(operationsDoc, operationName, variables) {

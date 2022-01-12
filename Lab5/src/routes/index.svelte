@@ -101,7 +101,11 @@
 	<h1>Перевірте своє інтернет підключення</h1>
 {:else if !offline}
 	{#if $isAuthenticated}
-		{#if !$showSpinner}
+		{#if $showeror}
+			<h1>Помилка</h1>
+		{:else if $showSpinner}
+			<img src={formSpinner} alt="spinner" />
+		{:else}
 			<form id="form" method="post" bind:this={form} on:submit|preventDefault={addTask}>
 				<h1>
 					<i><u>Завдання</u></i>
@@ -121,10 +125,6 @@
 					{/each}
 				</ul>
 			</form>
-		{:else if $showSpinner}
-			<img src={formSpinner} alt="spinner" />
-		{:else if $showeror}
-			<h1>Помилка</h1>
 		{/if}
 	{:else if !$isAuthenticated}
 		<button on:click={login}> Log in </button>
