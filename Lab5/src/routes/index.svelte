@@ -60,9 +60,7 @@
 
 		if (input.value.trim()) {
 			$showSpinner = true;
-			var l = fetchGraphQL(insert, 'MyMutation', { taskText: text });
-
-			l.then(function (v) {
+			fetchGraphQL(insert, 'MyMutation', { taskText: text }).then(function (v) {
 				idtask.set(v.data.insert_Todo_one.id);
 				let size = $storeFE.length;
 				$storeFE[size] = { id: $idtask, name: 'task', taskText: text };
@@ -74,12 +72,13 @@
 
 	export function downloadTasks() {
 		$showSpinner = true;
-		let tasks = fetchGraphQL(operationsDoc, 'MyQuery').then((data) => {
-			storeFE.set(data.data.Todo);
-		});
-		tasks.then(function () {
-			$showSpinner = false;
-		});
+		fetchGraphQL(operationsDoc, 'MyQuery')
+			.then((data) => {
+				storeFE.set(data.data.Todo);
+			})
+			.then(() => {
+				$showSpinner = false;
+			});
 	}
 
 	let offline = false;

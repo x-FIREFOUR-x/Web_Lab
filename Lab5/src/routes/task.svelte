@@ -9,7 +9,7 @@
 
 		fetchGraphQL(delete_, 'MyMutation', { _id: objAttributes.id }).then(function () {
 			$showSpinner = false;
-			$storeFE = $storeFE.filter(function (value) {
+			$storeFE = $storeFE.filter((value) => {
 				if (value.id != objAttributes.id) return value;
 			});
 		});
