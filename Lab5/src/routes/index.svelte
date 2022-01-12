@@ -14,7 +14,7 @@
 		token,
 		showeror
 	} from './store.js';
-	import { fetchGraphQL, operationsDoc, insert } from './GraphQL.js';
+	import { fetchGraphQL, errorHandler, operationsDoc, insert } from './GraphQL.js';
 	import auth from './auth-service';
 	import { get } from 'svelte/store';
 	import { onMount } from 'svelte';
@@ -60,13 +60,17 @@
 
 		if (input.value.trim()) {
 			$showSpinner = true;
-			fetchGraphQL(insert, 'MyMutation', { taskText: text }).then(function (v) {
-				idtask.set(v.data.insert_Todo_one.id);
-				let size = $storeFE.length;
-				$storeFE[size] = { id: $idtask, name: 'task', taskText: text };
-				input.value = '';
-				$showSpinner = false;
-			});
+			fetchGraphQL(insert, 'MyMutation', { taskText: text })
+				.then(function (v) {
+					idtask.set(v.data.insert_Todo_one.id);
+					let size = $storeFE.length;
+					$storeFE[size] = { id: $idtask, name: 'task', taskText: text };
+					input.value = '';
+				})
+				.catch(errorHandler)
+				.finally(() => {
+					$showSpinner = false;
+				});
 		}
 	}
 
@@ -76,7 +80,8 @@
 			.then((data) => {
 				storeFE.set(data.data.Todo);
 			})
-			.then(() => {
+			.catch(errorHandler)
+			.finally(() => {
 				$showSpinner = false;
 			});
 	}

@@ -6,9 +6,8 @@ to your service.
 import { showSpinner, showeror, token } from './store.js';
 import { get } from 'svelte/store';
 
-function errorHandler() {
+export function errorHandler() {
 	showeror.set(true);
-	showSpinner.set(false);
 }
 
 export async function fetchGraphQL(operationsDoc, operationName, variables) {
@@ -61,18 +60,3 @@ export const delete_ = `
     }
   }
 `;
-
-function fetchMyQuery() {
-	return fetchGraphQL(operationsDoc, 'MyQuery', {});
-}
-
-export default async function startFetchMyQuery() {
-	const { errors, data } = await fetchMyQuery();
-
-	if (errors) {
-		errorHandler();
-	}
-
-	// do something great with this precious data
-	console.log(data);
-}

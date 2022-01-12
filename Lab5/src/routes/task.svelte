@@ -1,5 +1,5 @@
 <script>
-	import { fetchGraphQL, delete_ } from './GraphQL.js';
+	import { fetchGraphQL, errorHandler, delete_ } from './GraphQL.js';
 	import { storeFE, showSpinner } from './store.js';
 
 	export let objAttributes = {};
@@ -7,12 +7,16 @@
 	function removeComponent() {
 		$showSpinner = true;
 
-		fetchGraphQL(delete_, 'MyMutation', { _id: objAttributes.id }).then(function () {
-			$showSpinner = false;
-			$storeFE = $storeFE.filter((value) => {
-				if (value.id != objAttributes.id) return value;
+		fetchGraphQL(delete_, 'MyMutation', { _id: objAttributes.id })
+			.then(function () {
+				$storeFE = $storeFE.filter((value) => {
+					if (value.id != objAttributes.id) return value;
+				});
+			})
+			.catch(errorHandler)
+			.finally(() => {
+				$showSpinner = false;
 			});
-		});
 	}
 </script>
 
