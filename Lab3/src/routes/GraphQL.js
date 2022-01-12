@@ -20,7 +20,7 @@ export async function fetchGraphQL(operationsDoc, operationName, variables) {
 		})
 	});
 
-	return await result.json();
+	return result.json();
 }
 
 export const operationsDoc = `
@@ -41,10 +41,6 @@ export const insert = `
 `;
 
 export const delete_ = `
-  query MyQuery {
-    __typename
-  }
-  
   mutation MyMutation($_id: uuid) {
     delete_Tasks(where: {id: {_eq: $_id}}) {
       affected_rows
