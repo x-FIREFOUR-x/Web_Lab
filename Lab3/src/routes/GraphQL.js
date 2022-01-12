@@ -52,16 +52,3 @@ export const delete_ = `
     }
   }
 `;
-
-function fetchMyQuery() {
-	return fetchGraphQL(operationsDoc, 'MyQuery', {});
-}
-
-export default async function startFetchMyQuery() {
-	const { errors, data } = await fetchMyQuery();
-
-	if (errors) {
-		// handle those errors like a pro
-		errorHandler();
-	}
-}
