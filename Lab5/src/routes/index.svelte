@@ -58,7 +58,7 @@
 		const input = document.querySelector("input[type='text']");
 		let text = input.value;
 
-		if (input.value) {
+		if (input.value.trim()) {
 			$showSpinner = true;
 			var l = fetchGraphQL(insert, 'MyMutation', { taskText: text });
 
