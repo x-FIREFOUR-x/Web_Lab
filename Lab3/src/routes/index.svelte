@@ -37,12 +37,12 @@
 
 	setClient(client);
 	const sub = operationStore(`
-  		subscription MySub {
-			Tasks {
-	  			id
-	  			taskText
-			  }
-  		}
+		subscription MySub {
+  			Tasks(order_by: {date: asc}) {
+    			id
+    			taskText
+  			}
+		}
 	`);
 
 	import { operationStore, subscription } from '@urql/svelte';

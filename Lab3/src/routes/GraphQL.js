@@ -24,13 +24,13 @@ export async function fetchGraphQL(operationsDoc, operationName, variables) {
 }
 
 export const operationsDoc = `
-    query MyQuery {
-      Tasks {
-        id
-        taskText
-      }
-    }
-  `;
+	query MyQuery {
+    	Tasks(order_by: {date: asc}) {
+      		id
+      		taskText
+    	}
+  	}
+`;
 
 export const insert = `
     mutation MyMutation($taskText: String = "") {
