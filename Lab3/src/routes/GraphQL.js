@@ -5,7 +5,7 @@ to your service.
 
 import { showSpinner, showeror } from './store.js';
 
-function errorHandler() {
+export function errorHandler() {
 	showeror.set(true);
 	showSpinner.set(false);
 }

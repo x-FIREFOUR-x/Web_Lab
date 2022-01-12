@@ -6,7 +6,7 @@
 	import formSpinner from '$lib/formSpinner.png';
 	import Task from './task.svelte';
 	import { storeFE, idtask, showSpinner, showeror } from './store.js';
-	import { fetchGraphQL, operationsDoc, insert } from './GraphQL.js';
+	import { fetchGraphQL, errorHandler, operationsDoc, insert } from './GraphQL.js';
 	import { Client, createClient, defaultExchanges, subscriptionExchange } from '@urql/core';
 	import { setClient } from '@urql/svelte';
 	import { createClient as createWSClient } from 'graphql-ws';
@@ -61,13 +61,17 @@
 
 		if (input.value.trim()) {
 			$showSpinner = true;
-			fetchGraphQL(insert, 'MyMutation', { taskText: text }).then(function (v) {
-				idtask.set(v.data.insert_Tasks_one.id);
-				let size = $storeFE.length;
-				$storeFE[size] = { id: $idtask, name: 'todo', taskText: text };
-				input.value = '';
-				$showSpinner = false;
-			});
+			fetchGraphQL(insert, 'MyMutation', { taskText: text })
+				.then(function (v) {
+					idtask.set(v.data.insert_Tasks_one.id);
+					let size = $storeFE.length;
+					$storeFE[size] = { id: $idtask, name: 'todo', taskText: text };
+					input.value = '';
+				})
+				.catch(errorHandler)
+				.finally(() => {
+					$showSpinner = false;
+				});
 		}
 	}
 
@@ -77,7 +81,8 @@
 			.then((data) => {
 				storeFE.set(data.data.Tasks);
 			})
-			.then(() => {
+			.catch(errorHandler)
+			.finally(() => {
 				$showSpinner = false;
 			});
 		subscription(sub, handleSubscription);
