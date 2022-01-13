@@ -53,13 +53,10 @@
 	};
 
 	$storeFE = [];
+	let text = '';
 	downloadTasks();
-	let text;
 
 	function addTask() {
-		//const input = document.querySelector("input[type='text']");
-		//let text = input.value;
-
 		if (text.trim()) {
 			$showSpinner = true;
 			fetchGraphQL(insert, 'MyMutation', { taskText: text })
