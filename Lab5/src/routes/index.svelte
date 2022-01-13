@@ -53,19 +53,17 @@
 	}
 
 	$storeFE = [];
+	let text;
 
 	function addTask() {
-		const input = document.querySelector("input[type='text']");
-		let text = input.value;
-
-		if (input.value.trim()) {
+		if (text.trim()) {
 			$showSpinner = true;
 			fetchGraphQL(insert, 'MyMutation', { taskText: text })
 				.then(function (v) {
 					idtask.set(v.data.insert_Todo_one.id);
 					let size = $storeFE.length;
 					$storeFE[size] = { id: $idtask, name: 'task', taskText: text };
-					input.value = '';
+					text = '';
 				})
 				.catch(errorHandler)
 				.finally(() => {
@@ -114,6 +112,7 @@
 					type="text"
 					name="nametask"
 					maxlength="25"
+					bind:value={text}
 					placeholder="Введіть ваше завдання"
 				/>
 				<button type="submit"> Добавити завдання </button>
