@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import formSpinner from '$lib/formSpinner.png';
+	import formSpinner from '$lib/formSpinner.gif';
 	import Task from './task.svelte';
 	import { storeFE, idtask, showSpinner, showeror } from './store.js';
 	import { fetchGraphQL, errorHandler, operationsDoc, insert } from './GraphQL.js';
@@ -104,7 +104,7 @@
 {:else if !offline}
 	{#if $showeror}
 		<h1>Ошибка</h1>
-	{:else if !$showSpinner}
+	{:else}
 		<form id="form" method="post" bind:this={form} on:submit|preventDefault={addTask}>
 			<h1>
 				<i><u>Завдання</u></i>
@@ -123,8 +123,9 @@
 				{/each}
 			</ul>
 		</form>
-	{:else if $showSpinner}
-		<img src={formSpinner} alt="spinner" />
+		{#if $showSpinner}
+			<img src={formSpinner} alt="spinner" />
+		{/if}
 	{/if}
 {/if}
 
@@ -171,5 +172,15 @@
 		text-align: left;
 		padding: 0;
 		min-width: 100%;
+	}
+	img {
+		top: 0;
+		left: 0;
+		position: fixed;
+		z-index: 2;
+		height: 100%;
+		width: 100%;
+		margin: 0;
+		padding: 0;
 	}
 </style>
