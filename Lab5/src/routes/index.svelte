@@ -19,17 +19,7 @@
 	import { get } from 'svelte/store';
 	import { onMount } from 'svelte';
 
-	window.onload = async () => {
-		if (get(isAuthenticated)) {
-			downloadTasks();
-		}
-	};
-
-	token.subscribe(async (tokenValue) => {
-		if (tokenValue !== '') {
-			downloadTasks();
-		}
-	});
+	$: $token && downloadTasks();
 
 	let auth0Client;
 	onMount(async () => {
@@ -37,10 +27,14 @@
 		isAuthenticated.set(await auth0Client.isAuthenticated());
 		const accessToken = await auth0Client.getIdTokenClaims();
 		if (accessToken) {
-			token.set(accessToken.__raw);
+			$token = accessToken.__raw;
 			downloadTasks();
 		}
 		user.set(await auth0Client.getUser());
+
+		if (get(isAuthenticated)) {
+			downloadTasks();
+		}
 	});
 
 	function login() {
@@ -53,7 +47,7 @@
 	}
 
 	$storeFE = [];
-	let text;
+	let text = '';
 
 	function addTask() {
 		if (text.trim()) {
@@ -76,7 +70,7 @@
 		$showSpinner = true;
 		fetchGraphQL(operationsDoc, 'MyQuery')
 			.then((data) => {
-				storeFE.set(data.data.Todo);
+				storeFE.set(data?.data?.Todo ?? []);
 			})
 			.catch(errorHandler)
 			.finally(() => {
